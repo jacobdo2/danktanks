@@ -323,7 +323,7 @@ window.onload = function(){
     // var testTank = clone(defaultTank);
     // testTank.x = 1050;
     // tanks.push(testTank);
-
+    console.log("testing branch");
     var userTank = clone(defaultTank);
     socket.on('join game', function(response){
         var response = JSON.parse(response);
