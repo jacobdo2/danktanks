@@ -35,6 +35,7 @@ var tanks = [
 var bullets = [
 
 ];
+/*
 var buttons = [
     {
         'buttonText':'Start game',
@@ -52,7 +53,7 @@ var buttons = [
         'width':140,
         'height':50
     }
-];
+];*/
 var pointer = {
     'x':0,
     'y':0,
@@ -69,10 +70,15 @@ var yaxis;
 // Mouse positions
 var mouseX;
 var mouseY;
+// If mouse is pressed
+var mousepressed;
 // If spacebar is pressed
 var spacebar;
 // Currently controlling tank
 var tankToControl = tanks[0];
+
+// Tank parameter
+var rotationSpeed = 4;
 
 var ticker;
 var gameStarted = true;
@@ -220,6 +226,12 @@ function draw() {
         } else if (tank.reloadTimer > 0) {
             ctx.fillText("Reloading", tankX + 32, tankY + 80);
         }
+
+        // Draw player id
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        ctx.fillText(""+tank.userId, tankX + 32, tankY - 50);
     }
     // Draw bullets
     for (var i = 0; i < bullets.length; i++) {
@@ -323,7 +335,7 @@ window.onload = function(){
     // var testTank = clone(defaultTank);
     // testTank.x = 1050;
     // tanks.push(testTank);
-
+    console.log("testing branch");
     var userTank = clone(defaultTank);
     socket.on('join game', function(response){
         var response = JSON.parse(response);
@@ -426,9 +438,12 @@ canvas.addEventListener("mousemove", function(e){
 
 canvas.addEventListener("mousedown", function(e){
     // Check button presses
-    if (!checkButtonPress() && gameStarted){
-        shoot(tankToControl);
-    }
+    mousepressed = true;
+});
+
+canvas.addEventListener("mouseup", function(e){
+    // Check button presses
+    mousepressed = false;
 });
 
 
@@ -446,7 +461,6 @@ function checkInput(tankToControl) {
     if (tank == null) {
         return;
     }
-    var rotationSpeed = 4;
     tank.movementSpeed = 0;
     xaxis = 0;
     yaxis = 0;
@@ -512,6 +526,11 @@ function checkInput(tankToControl) {
 
         //Rotate towards targetRotation
         tank.rotation += clamp(difference, -rotationSpeed, rotationSpeed);
+    }
+
+    // Shoot if mouse is pressed
+    if (mousepressed) {
+        shoot(tank);
     }
 }
 

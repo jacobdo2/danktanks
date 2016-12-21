@@ -108,6 +108,12 @@ function draw() {
         } else if (tank.reloadTimer > 0) {
             ctx.fillText("Reloading", tankX + 32, tankY + 80);
         }
+
+        // Draw player id
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        ctx.fillText(""+tank.userId, tankX + 32, tankY - 50);
     }
     // Draw bullets
     for (var i = 0; i < bullets.length; i++) {

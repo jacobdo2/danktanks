@@ -32,9 +32,12 @@ canvas.addEventListener("mousemove", function(e){
 
 canvas.addEventListener("mousedown", function(e){
     // Check button presses
-    if (!checkButtonPress() && gameStarted){
-        shoot(tankToControl);
-    }
+    mousepressed = true;
+});
+
+canvas.addEventListener("mouseup", function(e){
+    // Check button presses
+    mousepressed = false;
 });
 
 
@@ -52,7 +55,6 @@ function checkInput(tankToControl) {
     if (tank == null) {
         return;
     }
-    var rotationSpeed = 4;
     tank.movementSpeed = 0;
     xaxis = 0;
     yaxis = 0;
@@ -118,6 +120,11 @@ function checkInput(tankToControl) {
 
         //Rotate towards targetRotation
         tank.rotation += clamp(difference, -rotationSpeed, rotationSpeed);
+    }
+
+    // Shoot if mouse is pressed
+    if (mousepressed) {
+        shoot(tank);
     }
 }
 
