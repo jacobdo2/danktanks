@@ -1,3 +1,189 @@
-.container {
-  background: red;
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    max-width: 100vw;
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      font-family: $font-monospace;
+      font-size: 48px;
+      font-weight: 700;
+    }
+
+    .slogan {
+      font-family: $font-monospace;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .menu {
+      position: relative;
+
+      .main {
+        display: flex;
+        flex-direction: column;
+        font-family: $font-monospace;
+        margin: 24px 0;
+        opacity: 1;
+        transform: translateX(0%);
+        transition: all .2s ease;
+
+        &.hidden {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+
+        .item {
+          padding: 8px 16px 8px 0;
+          cursor: pointer;
+        }
+      }
+
+      .submenus {
+        position: absolute;
+        visibility: hidden;
+        top: 0; left: 0;
+        display: flex;
+
+
+        &.active {
+          visibility: hidden;
+        }
+
+        .submenu {
+          width: 400px;
+          position: absolute;
+          top: 0; left: 0;
+          visibility: hidden;
+          opacity: 0;
+          transform: translateX(100%);
+          transition: transform .3s ease;
+          margin: 24px 0;
+          display: flex;
+          flex-direction: column;
+
+          &.active {
+            transform: translateX(0%);
+            opacity: 1;
+            visibility: visible;
+          }
+
+          .submenu-header {
+            display: flex;
+            align-items: center;
+
+            .submenu-title {
+              font-family: $font-monospace;
+              font-size: 24px;
+              margin-left: 16px;
+            }
+
+            .btn-back-to-main-menu {
+              cursor: pointer;
+            }
+          }
+
+          .input-group {
+            margin: 16px 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            width: 100%;
+
+            label {
+              position: absolute;
+              top: 0;
+              left: 0;
+              transition: transform .2s ease, font-size .2s ease;
+              font-family: $font-monospace;
+              cursor: text;
+            }
+
+            input {
+              border: none;
+              border-bottom: 1px solid black;
+              outline: none;
+              box-shadow: none;
+              padding: 8px 0;
+              margin: 4px 0;
+              font-family: $font-monospace;
+              font-weight: 300;
+              font-size: 24px;
+
+              &:focus {
+                ~ label {
+                  transform: translateY(-8px);
+                  font-size: 12px;
+                }
+              }
+
+              ~ label {
+                transform: translateY(24px);
+                font-size: 16px;
+              }
+
+              ~ .hint {
+                font-family: $font-monospace;
+                font-weight: 300;
+                font-size: 12px;
+              }
+            }
+          }
+
+          button {
+            border: none;
+            outline: none;
+            display: inline;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 2px;
+            background-color: black;
+            color: white;
+            font-family: $font;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 0 rgba(0,0,0,.5);
+
+            &:active {
+              transform: translateY(2px);
+              box-shadow: 0 0 0 rgba(0,0,0,.5);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .snackbar-wrapper {
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    .snackbar {
+      font-family: $font;
+      display: inline-flex;
+      padding: 8px 16px;
+      color: white;
+      border-radius: 2px;
+      background-color: rgba(0,0,0,.5);
+      transform: translateY(100%);
+      transition: transform .2s;
+      will-change: transform;
+      &.open {
+        transform: translateY(-50%);
+      }
+    }
+  }
 }
+

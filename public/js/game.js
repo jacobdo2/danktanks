@@ -1,221 +1,3 @@
-var canvas  = document.querySelector("#game-canvas");
-/*
-canvas.width  = canvas.scrollWidth;
-canvas.height = canvas.scrollHeight;*/
-canvas.width  = 1280;
-canvas.height = 720;
-
-var ctx = canvas.getContext('2d');
-
-//Draw the game
-function draw() {
-    // Draw background
-    ctx.fillStyle = 'green';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw level bottom part
-    for (var i = 0; i < level.length; i++) {
-        // Probably use this switch for images
-        switch(level[i].type) {
-            case 'platform':
-                break;
-        }
-        var obj = level[i];
-        var x = obj.x;
-        var y = obj.y;
-        var w = obj.width;
-        var h = obj.height;
-
-        // Draw object bottom
-        ctx.fillStyle = '#3c3636';
-        ctx.fillRect(x, y, w, h);
-    }
-
-    // Sort tanks so they draw in correct order
-    tanks.sort(function(a, b) {
-        return a.y - b.y;
-    });
-    // Draw tanks
-    for (var t = 0; t < tanks.length; t++) {
-        var tank = tanks[t];
-        //Draw tank
-        ctx.fillStyle = 'green';
-        var tankX = tank.x + 4;
-        var tankY = tank.y + 4;
-        var tankW = 64;
-        var tankH = 64;
-        var tankR = tank.rotation * Math.PI / 180;
-        var tankTR = tank.turretRotation * Math.PI / 180;
-        //ctx.fillRect(x, y, w, h);
-        //drawRotated(ctx, x, y, w, h, r);
-
-        // Draw tank shadow
-        var shadow = new Image();
-        shadow.src = './images/tank/tankShadow.png';
-        drawImageRotatedSliced(ctx, shadow, 0, 0, 64, 64, tankX, tankY, tankW, tankH, tankR);
-
-        // Draw tank treads
-        var treads = new Image();
-        treads.src = './images/tank/tankTreads.png';
-        for (i = 0; i < 7; i++) {
-            drawImageRotatedSliced(ctx, treads, 64 * i, 0, 64, 64, tankX, tankY - i * 2, tankW, tankH, tankR);
-        }
-
-        // Draw tank body
-        var body = new Image();
-        body.src = './images/tank/tankBody.png';
-        for (i = 0; i < 3; i++) {
-            drawImageRotatedSliced(ctx, body, 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
-        }
-
-        // Draw tank turret
-        var turret = new Image();
-        turret.src = './images/tank/tankTurret.png';
-        for (i = 0; i < 12; i++) {
-            drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
-        }
-
-        // Draw UI
-        var uiBarBg = new Image();
-        uiBarBg.src = './images/ui/uiBarBg.png';
-        var uiBarGlass = new Image();
-        uiBarGlass.src = './images/ui/uiBarGlass.png';
-        // Armor bar
-        ctx.drawImage(uiBarBg, tankX, tankY - 40, 64, 8);
-
-        var armorBar = new Image();
-        armorBar.src = './images/ui/armorBar.png';
-        var hpPercentage = tank.hp / tank.maxHp;
-        ctx.drawImage(armorBar, 0, 0, hpPercentage * 64, 4, tankX, tankY - 40, hpPercentage * 64, 8);
-
-        ctx.drawImage(uiBarGlass, tankX, tankY - 40, 64, 8);
-
-        // Energy bar
-        ctx.drawImage(uiBarBg, tankX, tankY - 32, 64, 8);
-
-        var energyBar = new Image();
-        energyBar.src = './images/ui/energyBar.png';
-        var energyBarPercentage = tank.energy / 100;
-        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 64, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
-
-        ctx.drawImage(uiBarGlass, tankX, tankY - 32, 64, 8);
-
-        // Draw ammo
-        ctx.font = '24px serif';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'black';
-        // If not reloading
-        if (tank.ammo >= 0 && tank.reloadTimer <= 0) {
-            ctx.fillText(""+tank.ammo, tankX + 32, tankY + 80);
-        } else if (tank.reloadTimer > 0) {
-            ctx.fillText("Reloading", tankX + 32, tankY + 80);
-        }
-
-        // Draw player id
-        ctx.font = '24px serif';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'black';
-        ctx.fillText(""+tank.userId, tankX + 32, tankY - 50);
-    }
-    // Draw bullets
-    for (var i = 0; i < bullets.length; i++) {
-        var bullet = bullets[i];
-        var x = bullet.x;
-        var y = bullet.y;
-        var w = bullet.width;
-        var h = bullet.height;
-        var r = bullet.rotation * Math.PI / 180;
-
-        // Draw bullet shadow
-        var bulletShadow = new Image();
-        bulletShadow.src = './images/tank/bulletShadow.png';
-        drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
-
-        // Draw bullet
-        var bullet = new Image();
-        bullet.src = './images/tank/bullet.png';
-        drawImageRotated(ctx, bullet, x , y-24, 20, 10, r);
-    }
-
-    // Draw level top part
-    for (var i = 0; i < level.length; i++) {
-        // Probably use this switch for images
-        switch(level[i].type) {
-            case 'platform':
-                break;
-        }
-        var obj = level[i];
-        var x = obj.x;
-        var y = obj.y;
-        var w = obj.width;
-        var h = obj.height;
-
-        // Draw object top
-        ctx.fillStyle = '#5a5251';
-        ctx.fillRect(x, y-50, w, h);
-    }
-
-    // Draw buttons
-    for (var i = 0; i < buttons.length; i++) {
-        var button = buttons[i];
-        var text = button.buttonText;
-        var x = button.x;
-        var y = button.y;
-        var w = button.width;
-        var h = button.height;
-
-        ctx.fillStyle = 'black';
-        ctx.fillRect(x, y, w, h);
-
-        ctx.font = '24px serif';
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'white';
-        ctx.fillText(text, x + w/2, y+h/2);
-    }
-}
-
-function drawRotated(ctx, x, y, width, height, rotation) {
-
-    var halfWidth = width / 2;
-    var halfHeight = height / 2;
-
-    ctx.save();
-
-    ctx.translate(x + halfWidth, y + halfHeight);
-    ctx.rotate(rotation);
-    ctx.fillRect(-halfWidth, -halfHeight, width, height);
-
-    ctx.restore();
-}
-
-function drawImageRotated(ctx, image, x, y, width, height, rotation) {
-
-    var halfWidth = width / 2;
-    var halfHeight = height / 2;
-
-    ctx.save();
-
-    ctx.translate(x + halfWidth, y + halfHeight);
-    ctx.rotate(rotation);
-    ctx.drawImage(image, -halfHeight, -halfHeight, width, height);
-
-    ctx.restore();
-}
-
-function drawImageRotatedSliced(ctx, image, sliceX, sliceY, sliceWidth, sliceHeight, x, y, width, height, rotation) {
-
-    var halfWidth = width / 2;
-    var halfHeight = height / 2;
-
-    ctx.save();
-
-    ctx.translate(x + halfWidth, y + halfHeight);
-    ctx.rotate(rotation);
-    ctx.drawImage(image, sliceX, sliceY, sliceWidth, sliceHeight, -halfWidth, -halfHeight, width, height);
-
-    ctx.restore();
-}
-
 var clientId;
 
 var level = [
@@ -370,6 +152,120 @@ if(canvas){
             ctx.fillRect(x, y, w, h);
         }
 
+<<<<<<< HEAD:public/js/script.js
+    // Sort tanks so they draw in correct order
+    tanks.sort(function(a, b) {
+        return a.y - b.y;
+    });
+    // Draw tanks
+    for (var t = 0; t < tanks.length; t++) {
+        var tank = tanks[t];
+        //Draw tank
+        ctx.fillStyle = 'green';
+        var tankX = tank.x + 4;
+        var tankY = tank.y + 4;
+        var tankW = 64;
+        var tankH = 64;
+        var tankR = tank.rotation * Math.PI / 180;
+        var tankTR = tank.turretRotation * Math.PI / 180;
+        //ctx.fillRect(x, y, w, h);
+        //drawRotated(ctx, x, y, w, h, r);
+
+        // Draw tank shadow
+        var shadow = new Image();
+        shadow.src = './images/tank/tankShadow.png';
+        drawImageRotatedSliced(ctx, shadow, 0, 0, 64, 64, tankX, tankY, tankW, tankH, tankR);
+
+        // Draw tank treads
+        var treads = new Image();
+        treads.src = './images/tank/tankTreads.png';
+        for (i = 0; i < 7; i++) {
+            drawImageRotatedSliced(ctx, treads, 64 * i, 0, 64, 64, tankX, tankY - i * 2, tankW, tankH, tankR);
+        }
+
+        // Draw tank body
+        var body = new Image();
+        body.src = './images/tank/tankBody.png';
+        for (i = 0; i < 3; i++) {
+            drawImageRotatedSliced(ctx, body, 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
+        }
+
+        // Draw tank turret
+        var turret = new Image();
+        turret.src = './images/tank/tankTurret.png';
+        for (i = 0; i < 12; i++) {
+            drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
+        }
+
+        // Draw UI
+        var uiBarBg = new Image();
+        uiBarBg.src = './images/ui/uiBarBg.png';
+        var uiBarGlass = new Image();
+        uiBarGlass.src = './images/ui/uiBarGlass.png';
+        // Armor bar
+        ctx.drawImage(uiBarBg, tankX, tankY - 40, 64, 8);
+
+        var armorBar = new Image();
+        armorBar.src = './images/ui/armorBar.png';
+        var hpPercentage = tank.hp / tank.maxHp;
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 64, 4, tankX, tankY - 40, hpPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 40, 64, 8);
+
+        // Energy bar
+        ctx.drawImage(uiBarBg, tankX, tankY - 32, 64, 8);
+
+        var energyBar = new Image();
+        energyBar.src = './images/ui/energyBar.png';
+        var energyBarPercentage = tank.energy / 100;
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 64, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 32, 64, 8);
+
+        // Draw ammo
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        // If not reloading
+        if (tank.ammo >= 0 && tank.reloadTimer <= 0) {
+            ctx.fillText(""+tank.ammo, tankX + 32, tankY + 80);
+        } else if (tank.reloadTimer > 0) {
+            ctx.fillText("Reloading", tankX + 32, tankY + 80);
+        }
+
+        // Draw player id
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        ctx.fillText(""+tank.userId, tankX + 32, tankY - 50);
+    }
+    // Draw bullets
+    for (var i = 0; i < bullets.length; i++) {
+        var bullet = bullets[i];
+        var x = bullet.x;
+        var y = bullet.y;
+        var w = bullet.width;
+        var h = bullet.height;
+        var r = bullet.rotation * Math.PI / 180;
+
+        // Draw bullet shadow
+        var bulletShadow = new Image();
+        bulletShadow.src = './images/tank/bulletShadow.png';
+        drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
+
+        // Draw bullet
+        var bullet = new Image();
+        bullet.src = './images/tank/bullet.png';
+        drawImageRotated(ctx, bullet, x , y-24, 20, 10, r);
+    }
+
+    // Draw level top part
+    for (var i = 0; i < level.length; i++) {
+        // Probably use this switch for images
+        switch(level[i].type) {
+            case 'platform':
+                break;
+=======
         // Sort tanks so they draw in correct order
         tanks.sort(function(a, b) {
             return a.y - b.y;
@@ -483,6 +379,7 @@ if(canvas){
             // Draw object top
             ctx.fillStyle = '#5a5251';
             ctx.fillRect(x, y-50, w, h);
+>>>>>>> 3279735d8298953600b1df017202304619a5151b:public/js/game.js
         }
 
         // Draw buttons
@@ -981,132 +878,3 @@ function isCollide(a, b, newX, newY) {
         (newX > (b.x + b.width))
     );
 }
-/**
- *  Main menu
- */
-
-/**
-*  Main menu buttons
-*/
-var menuButtons = document.querySelectorAll('.menu .item');
-
-for(var i = 0; i<menuButtons.length; i++){
-    var button = menuButtons[i];
-
-    //open submenu
-    button.addEventListener('click', function(e){
-        var type = e.currentTarget.getAttribute('data-type');
-
-        //hide main menu and show submenus
-        var mainMenu = document.querySelector('.menu .main');
-        mainMenu.classList.add('hidden');
-        var subMenus = document.querySelector('.submenus');
-        subMenus.classList.add('active');
-
-        var submenu = document.querySelector('.submenu[data-type="' + type + '"]');
-        submenu.classList.add('active');
-
-    })
-}
-
-/**
- *
- * Back button on each of the submenus
- */
-var backButtons = document.querySelectorAll('.btn-back-to-main-menu');
-
-for(var i = 0; i<backButtons.length; i++){
-    backButtons[i].addEventListener('click', function(){
-
-        //go back to main menu
-        var mainMenu = document.querySelector('.menu .main');
-        mainMenu.classList.remove('hidden');
-        var subMenus = document.querySelector('.submenus');
-        subMenus.classList.remove('active');
-
-        //close active submenu
-        var activeSubMenu = document.querySelector('.submenu.active');
-        activeSubMenu.classList.remove('active');
-
-    })
-}
-
-/**
- * Focus in the input when clicked on label too
- */
-
-$('.submenu label').on('click tap', function(){
-    $(this).siblings('input').focus();
-})
-
-/**
- * Save user name in db/localstorage and start the game
- */
-$('.btn-start-quickplay').on('click tap', function(){
-    //check if name has been entered
-    var name = $(this).siblings('.input-group').find('input').val();
-
-    if(!name.length){
-        //please enter name
-        showSnackbar('Enter your name or live in shame');
-        return false;
-    }
-
-    //set item in localstorage
-    localStorage.setItem('name', name);
-
-    //TODO: set name in db
-
-    //redirect player to game
-    window.location.replace('/game');
-
-});
-
-var snackbarTicker;
-
-function showSnackbar(message){
-
-    var snackbar = $('.snackbar');
-
-    //check if the snackbar is already open
-    if(snackbar.hasClass('open')){
-
-        //if it is open, first close it
-        snackbar.removeClass('open');
-
-        //clear the previous closing timeout
-        clearTimeout(snackbarTicker);
-
-        //wait for the closing animation to end
-        snackbar.on('transitionend', function(){
-
-            //unbind transtion to prevent the snackbar from
-            //jumping every time it shows
-            snackbar.off('transitionend');
-            snackbar.text(message).addClass('open');
-
-            //close snackbar
-            snackbarTicker = setTimeout(function(){
-                snackbar.removeClass('open');
-            }, 2000)
-        })
-
-        return false;
-    }
-
-    //show snackbar and insert message
-    snackbar.text(message).addClass('open');
-
-    //close snackbar
-    snackbarTicker = setTimeout(function(){
-        snackbar.removeClass('open');
-    }, 2000)
-
-}
-
-
-
-
-
-
-
