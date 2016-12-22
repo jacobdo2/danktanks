@@ -43,10 +43,10 @@ canvas.addEventListener("mouseup", function(e){
 
 function getMousePosition(e) {
     var canvasRect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - canvasRect.left;
-    mouseY = e.clientY - canvasRect.top;
-    pointer.x = mouseX - 1;
-    pointer.y = mouseY - 1;
+    mouseX = e.clientX - canvasRect.left + viewX;
+    mouseY = e.clientY - canvasRect.top + viewY;
+    pointer.x = mouseX - 1 + viewX;
+    pointer.y = mouseY - 1 + viewY;
 }
 
 // Tank movement input

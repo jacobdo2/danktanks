@@ -17,9 +17,21 @@ if(canvas){
 
 //Draw the game
     function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+
+        // Center view to the tank
+        var differenceX = tankToControl.x - viewX - viewW/2;
+        var differenceY = tankToControl.y - viewY - viewH/2;
+
+        // Move the view
+        console.log(differenceX +' '+ differenceY);
+        ctx.translate(-differenceX, -differenceY);
+        viewX += differenceX;
+        viewY += differenceY;
+
         // Draw background
         ctx.fillStyle = 'green';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, 2280, 720);
 
         // Draw level bottom part
         for (var i = 0; i < level.length; i++) {

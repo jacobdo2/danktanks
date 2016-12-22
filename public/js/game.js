@@ -1,10 +1,10 @@
 var clientId;
 
 var level = [
-    {'width':1280, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':50, 'height':720, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':1280, 'height':50, 'x': 0, 'y':670, 'type':'platform'},
-    {'width':50, 'height':720, 'x': 1230, 'y':0, 'type':'platform'},
+    {'width':20000, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':50, 'height':20000, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':20000, 'height':50, 'x': 0, 'y':19950, 'type':'platform'},
+    {'width':50, 'height':20000, 'x': 19950, 'y':0, 'type':'platform'},
     {'width':640, 'height':300, 'x': 320, 'y':210, 'type':'platform'}
 ];
 // Tank: hp, team, movement speed, x, y, width, height, body rot, turret rot, xspd, yspd
@@ -135,9 +135,21 @@ if(canvas){
 
 //Draw the game
     function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+
+        // Center view to the tank
+        var differenceX = tankToControl.x - viewX - viewW/2;
+        var differenceY = tankToControl.y - viewY - viewH/2;
+
+        // Move the view
+        console.log(differenceX +' '+ differenceY);
+        ctx.translate(-differenceX, -differenceY);
+        viewX += differenceX;
+        viewY += differenceY;
+
         // Draw background
         ctx.fillStyle = 'green';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, 2280, 720);
 
         // Draw level bottom part
         for (var i = 0; i < level.length; i++) {
@@ -457,10 +469,10 @@ canvas.addEventListener("mouseup", function(e){
 
 function getMousePosition(e) {
     var canvasRect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - canvasRect.left;
-    mouseY = e.clientY - canvasRect.top;
-    pointer.x = mouseX - 1;
-    pointer.y = mouseY - 1;
+    mouseX = e.clientX - canvasRect.left + viewX;
+    mouseY = e.clientY - canvasRect.top + viewY;
+    pointer.x = mouseX - 1 + viewX;
+    pointer.y = mouseY - 1 + viewY;
 }
 
 // Tank movement input
