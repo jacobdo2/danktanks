@@ -142,14 +142,16 @@ if(canvas){
         var differenceY = tankToControl.y - viewY - viewH/2;
 
         // Move the view
-        console.log(differenceX +' '+ differenceY);
         ctx.translate(-differenceX, -differenceY);
         viewX += differenceX;
         viewY += differenceY;
 
         // Draw background
-        ctx.fillStyle = 'green';
-        ctx.fillRect(0, 0, 2280, 720);
+        var backgroundImage = new Image();
+        backgroundImage.src = './images/environment/grass.png';
+        var pattern = ctx.createPattern(backgroundImage, 'repeat');
+        ctx.fillStyle = pattern;
+        ctx.fillRect(-2000, -2000, 24000, 24000);
 
         // Draw level bottom part
         for (var i = 0; i < level.length; i++) {
