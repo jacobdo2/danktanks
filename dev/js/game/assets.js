@@ -1,10 +1,10 @@
 var clientId;
 
 var level = [
-    {'width':1280, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':50, 'height':720, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':1280, 'height':50, 'x': 0, 'y':670, 'type':'platform'},
-    {'width':50, 'height':720, 'x': 1230, 'y':0, 'type':'platform'},
+    {'width':20000, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':50, 'height':20000, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':20000, 'height':50, 'x': 0, 'y':19950, 'type':'platform'},
+    {'width':50, 'height':20000, 'x': 19950, 'y':0, 'type':'platform'},
     {'width':640, 'height':300, 'x': 320, 'y':210, 'type':'platform'}
 ];
 // Tank: hp, team, movement speed, x, y, width, height, body rot, turret rot, xspd, yspd
