@@ -170,51 +170,53 @@ function draw() {
         // Draw tank shadow
         var shadow = new Image();
         shadow.src = './images/tank/tankShadow.png';
-        drawImageRotatedSliced(ctx, shadow, 0, 0, 32, 32, tankX, tankY, tankW, tankH, tankR);
+        drawImageRotatedSliced(ctx, shadow, 0, 0, 64, 64, tankX, tankY, tankW, tankH, tankR);
 
         // Draw tank treads
         var treads = new Image();
         treads.src = './images/tank/tankTreads.png';
         for (i = 0; i < 7; i++) {
-            drawImageRotatedSliced(ctx, treads, 32 * i, 0, 32, 32, tankX, tankY - i * 2, tankW, tankH, tankR);
+            drawImageRotatedSliced(ctx, treads, 64 * i, 0, 64, 64, tankX, tankY - i * 2, tankW, tankH, tankR);
         }
 
         // Draw tank body
         var body = new Image();
         body.src = './images/tank/tankBody.png';
         for (i = 0; i < 3; i++) {
-            drawImageRotatedSliced(ctx, body, 32 * i, 0, 32, 32, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
+            drawImageRotatedSliced(ctx, body, 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
         }
 
         // Draw tank turret
         var turret = new Image();
         turret.src = './images/tank/tankTurret.png';
         for (i = 0; i < 12; i++) {
-            drawImageRotatedSliced(ctx, turret, 1 + 32 * i, 0, 32, 32, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
+            drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
         }
 
         // Draw UI
+        var uiBarBg = new Image();
+        uiBarBg.src = './images/ui/uiBarBg.png';
+        var uiBarGlass = new Image();
+        uiBarGlass.src = './images/ui/uiBarGlass.png';
         // Armor bar
-        var armorBarBg = new Image();
-        armorBarBg.src = './images/ui/armorBarBg.png';
-        ctx.drawImage(armorBarBg, tankX, tankY - 40, 64, 8);
+        ctx.drawImage(uiBarBg, tankX, tankY - 40, 64, 8);
 
         var armorBar = new Image();
         armorBar.src = './images/ui/armorBar.png';
-
         var hpPercentage = tank.hp / tank.maxHp;
-        ctx.drawImage(armorBar, 0, 0, hpPercentage * 32, 4, tankX, tankY - 40, hpPercentage * 64, 8);
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 64, 4, tankX, tankY - 40, hpPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 40, 64, 8);
 
         // Energy bar
-        var energyBarBg = new Image();
-        energyBarBg.src = './images/ui/energyBarBg.png';
-        ctx.drawImage(energyBarBg, tankX, tankY - 32, 64, 8);
+        ctx.drawImage(uiBarBg, tankX, tankY - 32, 64, 8);
 
         var energyBar = new Image();
         energyBar.src = './images/ui/energyBar.png';
-
         var energyBarPercentage = tank.energy / 100;
-        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 32, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 64, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 32, 64, 8);
 
         // Draw ammo
         ctx.font = '24px serif';
@@ -242,9 +244,10 @@ function draw() {
         var h = bullet.height;
         var r = bullet.rotation * Math.PI / 180;
 
-        // Draw shadow
-        // ctx.fillStyle = 'gray';
-        // ctx.fillRect(x, y, w, h);
+        // Draw bullet shadow
+        var bulletShadow = new Image();
+        bulletShadow.src = './images/tank/bulletShadow.png';
+        drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
 
         // Draw bullet
         var bullet = new Image();
