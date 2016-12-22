@@ -8,8 +8,13 @@ http.listen(3000, function(){
     console.log("listening on 3000");
 });
 app.get("/", function(request, response){
-    response.sendFile(__dirname + "/index.html");
+    response.sendFile(__dirname + "/views/main-menu.html");
 });
+
+app.get("/game", function(request, response){
+    response.sendFile(__dirname + "/views/game.html");
+});
+
 
 var io = require('socket.io')(http);
 

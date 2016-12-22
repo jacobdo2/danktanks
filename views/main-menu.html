@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>danktanks.io</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            Danktanks.io
+        </div>
+        <div class="slogan">Getting bamboozled is just the beginning</div>
+        <div class="menu">
+            <div class="main">
+                <div class="item" data-type="quickplay">Quick play</div>
+                <div class="item" data-type="ranked">Ranked</div>
+                <div class="item" data-type="highscores">High Scores</div>
+                <div class="item" data-type="options">Options</div>
+            </div>
+            <div class="submenus">
+                <div class="submenu" data-type="quickplay">
+                    <div class="submenu-header">
+                        <i class="material-icons btn-back-to-main-menu">arrow_back</i>
+                        <div class="submenu-title">Quickplay</div>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" name="player_name">
+                        <div class="hint">Hint: Skeletal, Vegetal, Pepe, Crepe</div>
+                        <label>Enter yo name, soldier</label>
+                    </div>
+                    <button class="btn-start-quickplay">Let's go</button>
+                </div>
+                <div class="submenu" data-type="ranked">
+                    <div class="submenu-header">
+                        <i class="material-icons btn-back-to-main-menu">arrow_back</i>
+                        <div class="submenu-title">Ranked</div>
+
+                    </div>
+                    <div class="notice">Not active yet</div>
+                </div>
+                <div class="submenu" data-type="highscores">
+                    <div class="submenu-header">
+                        <i class="material-icons btn-back-to-main-menu">arrow_back</i>
+                        <div class="submenu-title">High scores</div>
+
+                    </div>
+                    <div class="notice">Not active yet</div>
+                </div>
+                <div class="submenu" data-type="options">
+                    <div class="submenu-header">
+                        <i class="material-icons btn-back-to-main-menu">arrow_back</i>
+                        <div class="submenu-title">Options</div>
+
+                    </div>
+                    <div class="notice">Not active yet</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="snackbar-wrapper">
+        <div class="snackbar">
+            This is the message
+        </div>
+    </div>
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.min.js"></script>
+    <script src="js/ui.js" ></script>
+</body>
+</html>

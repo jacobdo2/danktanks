@@ -3,11 +3,17 @@ var sass = require("gulp-sass");
 var concat = require("gulp-concat");
 var rename = require("gulp-rename");
 
-gulp.task("concatJs", function(){
-    gulp.src(["dev/js/**/*.js"])
-        .pipe(concat("script.js"))
+gulp.task("concatGameJs", function(){
+    gulp.src(["dev/js/game/**/*.js"])
+        .pipe(concat("game.js"))
         .pipe(gulp.dest("public/js"));
 });
+
+gulp.task("concatUiJs", function(){
+    gulp.src(["dev/js/ui/**/*.js"])
+        .pipe(concat("ui.js"))
+        .pipe(gulp.dest("public/js"));
+})
 
 gulp.task('concatApp', function(){
     gulp.src(['server/_server.js',
@@ -24,7 +30,8 @@ gulp.task("compileSass", function(){
 });
 
 gulp.task("default", function(){
-    gulp.watch(["dev/js/**/*.js"], ["concatJs"]);
+    gulp.watch(["dev/js/game/**/*.js"], ["concatGameJs"]);
+    gulp.watch(["dev/js/ui/**/*.js"], ["concatUiJs"]);
     gulp.watch(["dev/sass/**/*.scss"], ["compileSass"]);
     gulp.watch(["server/**/*.js"], ["concatApp"]);
 });

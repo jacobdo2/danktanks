@@ -750,12 +750,3 @@ function isCollide(a, b, newX, newY) {
         (newX > (b.x + b.width))
     );
 }
-/**
- *  Main menu
- */
-
-var quickPlayBtn = document.querySelector('.item[data-type="quickplay"]');
-quickPlayBtn.addEventListener('click', function(e){
-    //get button type
-    var type = e.currentTarget.getAttribute('data-type');
-})
