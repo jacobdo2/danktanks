@@ -126,6 +126,11 @@ if(canvas){
     canvas.width  = 1280;
     canvas.height = 720;
 
+    var viewX = 0;
+    var viewY = 0;
+    var viewW = 1280;
+    var viewH = 720;
+
     var ctx = canvas.getContext('2d');
 
 //Draw the game
