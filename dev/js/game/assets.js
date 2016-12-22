@@ -35,6 +35,7 @@ var tanks = [
 var bullets = [
 
 ];
+/*
 var buttons = [
     {
         'buttonText':'Start game',
@@ -52,7 +53,7 @@ var buttons = [
         'width':140,
         'height':50
     }
-];
+];*/
 var pointer = {
     'x':0,
     'y':0,
@@ -69,10 +70,15 @@ var yaxis;
 // Mouse positions
 var mouseX;
 var mouseY;
+// If mouse is pressed
+var mousepressed;
 // If spacebar is pressed
 var spacebar;
 // Currently controlling tank
 var tankToControl = tanks[0];
+
+// Tank parameter
+var rotationSpeed = 4;
 
 var ticker;
 var gameStarted = true;

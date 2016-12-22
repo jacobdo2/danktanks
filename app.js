@@ -29,13 +29,13 @@ io.on('connection', function(socket){
 
     // Update tank positions for connected clients
     socket.on('update tank positions', function (tank) {
-        io.emit('update tank positions', tank);
+        socket.broadcast.emit('update tank positions', tank);
         //console.log("updating tank positions");
     });
 
     // Create a bullet for connected clients
     socket.on('bullet shot', function (bullet) {
-        io.emit('bullet shot', bullet);
+        socket.broadcast.emit('bullet shot', bullet);
         console.log("bullet sent");
     });
 });
