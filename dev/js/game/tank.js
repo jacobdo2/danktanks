@@ -34,10 +34,16 @@ function updateTanks() {
         var tankFriction = .9; // max 1 - no friction, min 0 - instantly stops
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
-        tank.xknockback *= tankFriction;
-        tank.yknockback *= tankFriction;
 
         tankMove(tank);
+
+        // Apply friction to speed
+
+        tank.xknockback *= tankFriction;
+        tank.yknockback *= tankFriction;
+        tank.movementSpeed *= .9;
+        // tank.xspd *= .1;
+        // tank.yspd *= .1;
 
         // Move the tank
         // tank.xspd = xspd;

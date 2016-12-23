@@ -2,11 +2,11 @@
 
 var canvas  = document.querySelector("#game-canvas");
 if(canvas){
-    /*
-     canvas.width  = canvas.scrollWidth;
-     canvas.height = canvas.scrollHeight;*/
-    canvas.width  = 1280;
-    canvas.height = 720;
+
+    canvas.width  = canvas.scrollWidth;
+    canvas.height = canvas.scrollHeight;
+    // canvas.width  = 1280;
+    // canvas.height = 720;
 
     var viewX = 0;
     var viewY = 0;
@@ -31,7 +31,7 @@ if(canvas){
 
         // Draw background
         var backgroundImage = new Image();
-        backgroundImage.src = './images/environment/grass.png';
+        backgroundImage.src = './images/environment/concrete.png';
         var pattern = ctx.createPattern(backgroundImage, 'repeat');
         ctx.fillStyle = pattern;
         ctx.fillRect(-2000, -2000, 24000, 24000);
@@ -97,43 +97,13 @@ if(canvas){
             for (i = 0; i < 12; i++) {
                 drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
             }
-
-            // Draw UI
-            var uiBarBg = new Image();
-            uiBarBg.src = './images/ui/uiBarBg.png';
-            var uiBarGlass = new Image();
-            uiBarGlass.src = './images/ui/uiBarGlass.png';
-            // Armor bar
-            ctx.drawImage(uiBarBg, tankX, tankY - 40, 64, 8);
-
-            var armorBar = new Image();
-            armorBar.src = './images/ui/armorBar.png';
-            var hpPercentage = tank.hp / tank.maxHp;
-            ctx.drawImage(armorBar, 0, 0, hpPercentage * 32, 4, tankX, tankY - 40, hpPercentage * 64, 8);
-
-            ctx.drawImage(uiBarGlass, tankX, tankY - 40, 64, 8);
-
-            // Energy bar
-            ctx.drawImage(uiBarBg, tankX, tankY - 32, 64, 8);
-
-            var energyBar = new Image();
-            energyBar.src = './images/ui/energyBar.png';
-            var energyBarPercentage = tank.energy / 100;
-            ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 32, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
-
-            ctx.drawImage(uiBarGlass, tankX, tankY - 32, 64, 8);
-
-            // Draw ammo
-            ctx.font = '24px serif';
+            // Draw tank name
+            ctx.font = '18px serif';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'black';
-            // If not reloading
-            if (tank.ammo >= 0 && tank.reloadTimer <= 0) {
-                ctx.fillText(""+tank.ammo, tankX + 32, tankY + 80);
-            } else if (tank.reloadTimer > 0) {
-                ctx.fillText("Reloading", tankX + 32, tankY + 80);
-            }
+            ctx.fillText(""+tank.name, tankX + tankW / 2, tankY - 24);
         }
+
         // Draw bullets
         for (var i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
@@ -143,9 +113,10 @@ if(canvas){
             var h = bullet.height;
             var r = bullet.rotation * Math.PI / 180;
 
-            // Draw shadow
-            // ctx.fillStyle = 'gray';
-            // ctx.fillRect(x, y, w, h);
+            // Draw bullet shadow
+            var bulletShadow = new Image();
+            bulletShadow.src = './images/tank/bulletShadow.png';
+            drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
 
             // Draw bullet
             var bullet = new Image();
@@ -189,6 +160,48 @@ if(canvas){
             ctx.fillStyle = 'white';
             ctx.fillText(text, x + w/2, y+h/2);
         }*/
+
+        // Draw player UI
+        // Ammo UI
+        ctx.font = '56px serif';
+        ctx.textAlign = 'right';
+        ctx.fillStyle = 'black';
+        var ammoTextX = viewX + viewW - 30;
+        var ammoTextY = viewY + viewH - 30;
+        // Draw ammo text
+        if (tankToControl.ammo > 0 && tank.reloadTimer <= 0) {
+            ctx.fillText(""+tankToControl.ammo, ammoTextX, ammoTextY);
+        } else if (tankToControl.reloadTimer > 0) {
+            ctx.fillText("Reloading", ammoTextX, ammoTextY);
+        }
+
+        // Armor and energy bars
+        // Get background and glass image
+        var uiBarBg = new Image();
+        uiBarBg.src = './images/ui/uiBarBg.png';
+        var uiBarGlass = new Image();
+        uiBarGlass.src = './images/ui/uiBarGlass.png';
+        // Armor bar
+        // Background
+        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 128, 256, 64);
+        // Armor bar
+        var armorBar = new Image();
+        armorBar.src = './images/ui/armorBar.png';
+        var hpPercentage = tank.hp / tank.maxHp;
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX, viewY + viewH - 128, hpPercentage * 256, 64);
+        // Glass
+        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 128, 256, 64);
+
+        // Energy bar
+        // Background
+        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 64, 256, 64);
+        // Energy bar
+        var energyBar = new Image();
+        energyBar.src = './images/ui/energyBar.png';
+        var energyBarPercentage = tank.energy / 100;
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX, viewY + viewH - 64, energyBarPercentage * 256, 64);
+        // Glass
+        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 64, 256, 64);
     }
 
     function drawRotated(ctx, x, y, width, height, rotation) {

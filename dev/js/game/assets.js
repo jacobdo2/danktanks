@@ -22,6 +22,7 @@ var defaultTank = {
     'reloadTimer':0,
     'shootDelayTimer':0,
     'team':0,
+    'maxSpeed':3.5,
     'movementSpeed':0,
     'x':150,
     'y':150,
@@ -32,7 +33,8 @@ var defaultTank = {
     'xspd':0,
     'yspd':0,
     'xknockback':0,
-    'yknockback':0
+    'yknockback':0,
+    'name':'u/lordtuts'
 };
 var tanks = [
 

@@ -57,7 +57,7 @@ function checkInput(tankToControl) {
     if (tank == null) {
         return;
     }
-    tank.movementSpeed = 0;
+    //tank.movementSpeed = 0;
     xaxis = 0;
     yaxis = 0;
     // For button codes refer to:
@@ -101,15 +101,25 @@ function checkInput(tankToControl) {
         tank.rotation += 360;
     }
 
-    // If there's input, rotate towards target direction
+    // Check movement input
     if (xaxis != 0 || yaxis != 0) {
-        // Drive forward
-        tank.movementSpeed = 3.5;
-
-        // Boosting
+        if (!spacebar) {
+            // Set max speed
+            tank.maxSpeed = 3.5;
+        } else
         if (spacebar && tank.energy > 0) {
-            tank.movementSpeed += 1;
+            // Set max speed
+            tank.maxSpeed = 4.5;
+            // Drain energy
             tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
+        }
+
+        // Drive forward
+        if (tank.movementSpeed < tank.maxSpeed) {
+            var acceleration = tank.maxSpeed/6;
+            // Makes sure speed doesn't exceed maxspeed
+            var speedIncrease = Math.min(acceleration, tank.maxSpeed - tank.movementSpeed);
+            tank.movementSpeed += speedIncrease;
         }
 
         // Calculate target rotation
