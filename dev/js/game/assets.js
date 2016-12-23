@@ -5,7 +5,13 @@ var level = [
     {'width':50, 'height':20000, 'x': 0, 'y':0, 'type':'platform'},
     {'width':20000, 'height':50, 'x': 0, 'y':19950, 'type':'platform'},
     {'width':50, 'height':20000, 'x': 19950, 'y':0, 'type':'platform'},
-    {'width':640, 'height':300, 'x': 320, 'y':210, 'type':'platform'}
+    {'width':300, 'height':50, 'x': 400, 'y':300, 'type':'platform'},
+    {'width':50, 'height':300, 'x': 1000, 'y':800, 'type':'platform'},
+    {'width':200, 'height':200, 'x': 500, 'y':900, 'type':'platform'},
+    {'width':300, 'height':50, 'x': 400, 'y':2200, 'type':'platform'},
+    {'width':50, 'height':300, 'x': 1200, 'y':1300, 'type':'platform'},
+    {'width':300, 'height':50, 'x': 2700, 'y':1400, 'type':'platform'},
+    {'width':50, 'height':300, 'x': 2000, 'y':2800, 'type':'platform'}
 ];
 // Tank: hp, team, movement speed, x, y, width, height, body rot, turret rot, xspd, yspd
 var defaultTank = {
@@ -67,17 +73,24 @@ var pointer = {
 // Driving direction axis
 var xaxis;
 var yaxis;
-// Mouse positions
+
+// Mouse
+// Absolute position in game world
 var mouseX;
 var mouseY;
+// Positon relative to tank
+var mouseTankOffsetX = 0;
+var mouseTankOffsetY = 0;
 // If mouse is pressed
 var mousepressed;
+
 // If spacebar is pressed
 var spacebar;
+
 // Currently controlling tank
 var tankToControl = tanks[0];
 
-// Tank parameter
+// Tank parameters
 var rotationSpeed = 4;
 
 var ticker;

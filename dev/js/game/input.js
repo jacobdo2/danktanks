@@ -45,6 +45,8 @@ function getMousePosition(e) {
     var canvasRect = canvas.getBoundingClientRect();
     mouseX = e.clientX - canvasRect.left + viewX;
     mouseY = e.clientY - canvasRect.top + viewY;
+    mouseTankOffsetX = mouseX - tankToControl.x - tankToControl.width/2;
+    mouseTankOffsetY = mouseY - tankToControl.y - tankToControl.height/2;
     pointer.x = mouseX - 1 + viewX;
     pointer.y = mouseY - 1 + viewY;
 }
@@ -81,9 +83,8 @@ function checkInput(tankToControl) {
         tank.turretRotation += 360;
     }
     // Get turret target rotation
-    var distToMouseX = mouseX - tank.x - tank.width/2;
-    var distToMouseY = mouseY - tank.y - tank.height/2;
-    var turretTargetRotation = Math.atan2(distToMouseY, distToMouseX) * 180 / Math.PI;
+    var turretTargetRotation = Math.atan2(mouseTankOffsetY, mouseTankOffsetX) * 180 / Math.PI;
+
     /*
     // Calculate the difference between target and current rotation
     var turrDifference = turretTargetRotation - tank.turretRotation;
