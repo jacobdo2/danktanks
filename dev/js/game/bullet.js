@@ -26,8 +26,9 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
         var tank = tanks[t];
         if (tank.team != bullet.team && isCollide(bullet, tank, newX, newY)) {
             tank.hp -= bullet.damage;
-            tank.xknockback = bullet.xspd * 0.2;
-            tank.yknockback = bullet.yspd * 0.2;
+            // Apply knockback to tank that was hit
+            tank.xknockback = bullet.xspd * hitKnockbackMultiplier;
+            tank.yknockback = bullet.yspd * hitKnockbackMultiplier;
             bullets.splice(index, 1);
         }
     }

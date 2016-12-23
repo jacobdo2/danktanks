@@ -1,5 +1,3 @@
-var energyRechargeSpeed = 100/(60*4); // 4 seconds
-var reloadTime = 60*3; // 3 seconds
 var spawnPositions = [
     {'x':150, 'y':150},
     {'x':1130, 'y':150},

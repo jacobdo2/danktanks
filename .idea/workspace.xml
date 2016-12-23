@@ -36,17 +36,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dev/js/game/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state relative-caret-position="174">
+              <caret line="167" column="74" lean-forward="true" selection-start-line="167" selection-start-column="74" selection-end-line="167" selection-end-column="74" />
               <folding>
-                <element signature="e#1242#1675#0" expanded="false" />
-                <element signature="e#4422#4855#0" expanded="false" />
-                <element signature="e#4889#5399#0" expanded="false" />
-                <marker date="1482524926808" expanded="false" signature="3718:4342" ph="{...}" />
+                <element signature="e#1190#1623#0" expanded="false" />
+                <element signature="e#4370#4803#0" expanded="false" />
+                <element signature="e#4837#5347#0" expanded="false" />
+                <element signature="e#5407#5578#0" expanded="false" />
+                <marker date="1482531000309" expanded="false" signature="3666:4290" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bullet.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dev/js/game/bullet.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="457">
+              <caret line="30" column="66" lean-forward="false" selection-start-line="30" selection-start-column="66" selection-end-line="30" selection-end-column="66" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -54,8 +65,8 @@
       <file leaf-file-name="events.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dev/js/game/events.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="9" column="14" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+            <state relative-caret-position="480">
+              <caret line="16" column="31" lean-forward="false" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -64,18 +75,28 @@
       <file leaf-file-name="assets.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dev/js/game/assets.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="36" column="23" lean-forward="true" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
+            <state relative-caret-position="637">
+              <caret line="108" column="22" lean-forward="false" selection-start-line="108" selection-start-column="22" selection-end-line="108" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="input.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="input.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dev/js/game/input.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1440">
-              <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="21" />
+            <state relative-caret-position="-293">
+              <caret line="177" column="43" lean-forward="false" selection-start-line="177" selection-start-column="43" selection-end-line="177" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dev/js/game/game.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-773">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -84,14 +105,21 @@
       <file leaf-file-name="tank.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dev/js/game/tank.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="420">
+              <caret line="14" column="35" lean-forward="true" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+              <folding>
+                <element signature="e#2758#3592#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>console.log</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -103,10 +131,13 @@
         <option value="$PROJECT_DIR$/dev/js/assets.js" />
         <option value="$PROJECT_DIR$/dev/js/input.js" />
         <option value="$PROJECT_DIR$/dev/js/tank.js" />
-        <option value="$PROJECT_DIR$/dev/js/game/input.js" />
+        <option value="$PROJECT_DIR$/public/js/game.js" />
+        <option value="$PROJECT_DIR$/dev/js/game/game.js" />
         <option value="$PROJECT_DIR$/dev/js/game/tank.js" />
-        <option value="$PROJECT_DIR$/dev/js/game/assets.js" />
         <option value="$PROJECT_DIR$/dev/js/game/canvas.js" />
+        <option value="$PROJECT_DIR$/dev/js/game/bullet.js" />
+        <option value="$PROJECT_DIR$/dev/js/game/input.js" />
+        <option value="$PROJECT_DIR$/dev/js/game/assets.js" />
       </list>
     </option>
   </component>
@@ -220,28 +251,6 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="environment" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tanks" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tanks" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="dev" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -300,7 +309,11 @@
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\tanks\public\images\ui" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\tanks\public\images\tank" />
       <recent name="C:\xampp\htdocs\tanks\public\images\ui" />
       <recent name="C:\xampp\htdocs\tanks\public\images\environment" />
     </key>
@@ -375,12 +388,12 @@
       <updated>1482498766217</updated>
       <workItem from="1482498767366" duration="4808000" />
       <workItem from="1482506779613" duration="153000" />
-      <workItem from="1482511757946" duration="6165000" />
+      <workItem from="1482511757946" duration="10457000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11126000" />
+    <option name="totallyTimeSpent" value="15418000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -393,18 +406,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19936034" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19078243" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19078243" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -446,6 +459,10 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/assets.js" />
+    <entry file="file://$PROJECT_DIR$/dev/js/game.js" />
+    <entry file="file://$PROJECT_DIR$/dev/js/input.js" />
+    <entry file="file://$PROJECT_DIR$/dev/js/tank.js" />
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
@@ -454,52 +471,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dev/js/assets.js" />
-    <entry file="file://$PROJECT_DIR$/dev/js/game.js" />
-    <entry file="file://$PROJECT_DIR$/dev/js/input.js" />
-    <entry file="file://$PROJECT_DIR$/dev/js/tank.js" />
+    <entry file="file://$PROJECT_DIR$/public/js/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="416" column="35" lean-forward="true" selection-start-line="416" selection-start-column="35" selection-end-line="416" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dev/js/game/tank.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dev/js/game/input.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dev/js/game/assets.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="36" column="23" lean-forward="true" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
-          <folding />
+        <state relative-caret-position="420">
+          <caret line="14" column="35" lean-forward="true" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+          <folding>
+            <element signature="e#2758#3592#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dev/js/game/events.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="9" column="14" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+        <state relative-caret-position="480">
+          <caret line="16" column="31" lean-forward="false" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dev/js/game/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        <state relative-caret-position="174">
+          <caret line="167" column="74" lean-forward="true" selection-start-line="167" selection-start-column="74" selection-end-line="167" selection-end-column="74" />
           <folding>
-            <element signature="e#1242#1675#0" expanded="false" />
-            <element signature="e#4422#4855#0" expanded="false" />
-            <element signature="e#4889#5399#0" expanded="false" />
-            <marker date="1482524926808" expanded="false" signature="3718:4342" ph="{...}" />
+            <element signature="e#1190#1623#0" expanded="false" />
+            <element signature="e#4370#4803#0" expanded="false" />
+            <element signature="e#4837#5347#0" expanded="false" />
+            <element signature="e#5407#5578#0" expanded="false" />
+            <marker date="1482531000309" expanded="false" signature="3666:4290" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/game/bullet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="30" column="66" lean-forward="false" selection-start-line="30" selection-start-column="66" selection-end-line="30" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/game/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-773">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/game/assets.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="637">
+          <caret line="108" column="22" lean-forward="false" selection-start-line="108" selection-start-column="22" selection-end-line="108" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/game/input.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-293">
+          <caret line="177" column="43" lean-forward="false" selection-start-line="177" selection-start-column="43" selection-end-line="177" selection-end-column="43" />
+          <folding />
         </state>
       </provider>
     </entry>

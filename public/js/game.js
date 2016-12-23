@@ -62,7 +62,7 @@ var buttons = [
         'height':50
     }
 ];*/
-var pointer = {
+var aimPointer = {
     'x':0,
     'y':0,
     'width':2,
@@ -93,10 +93,23 @@ var spacebar;
 var tankToControl = tanks[0];
 
 // Tank parameters
-var rotationSpeed = 4;
+var turnSpeed = 240/60; // How fast tank turns, degrees per second, 240 degrees
+var attackSpeed = 60/5; // Time before you can shoot again, 5 shots a second
+var energyRechargeSpeed = 100/(60*4); // Amount of energy it refills in 1/60th second
+var reloadTime = 2*60; // Time it takes to reload, seconds
+var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
+var movementFriction = .9; // Multiplier, how fast tank stops from moving
+var maxAmmo = 10; // How many bullets tank can hold
+var hitKnockbackMultiplier = 0.5; // How strong knockback is from bullet, multiplies bullet's speed
+var shotKnockbackMultiplier = 0.4; // How strong tank gets knocked back when shooting, multiplies bullet's speed
+var tankMoveSpeed = 3.5; // Top speed of tank when driving
+var tankBoostSpeed = 4.5; // Top speed of tank while boosting
+var tankAcceleration = tankMoveSpeed/6; // Acceleration amount in a frame
+var bulletSpeed = 12; // How fast bullet moves, pixels/frame
+var bulletDamage = 20;
 
 var ticker;
-var gameStarted = true;
+var gameStarted = true; // Whether or not players can control tanks
 function moveBullets() {
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
@@ -125,8 +138,9 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
         var tank = tanks[t];
         if (tank.team != bullet.team && isCollide(bullet, tank, newX, newY)) {
             tank.hp -= bullet.damage;
-            tank.xknockback = bullet.xspd * 0.2;
-            tank.yknockback = bullet.yspd * 0.2;
+            // Apply knockback to tank that was hit
+            tank.xknockback = bullet.xspd * hitKnockbackMultiplier;
+            tank.yknockback = bullet.yspd * hitKnockbackMultiplier;
             bullets.splice(index, 1);
         }
     }
@@ -157,7 +171,6 @@ if(canvas){
         var differenceY = tankToControl.y - viewY - viewH/2;
 
         // Move the view
-        console.log(differenceX +' '+ differenceY);
         ctx.translate(-differenceX, -differenceY);
         viewX += differenceX;
         viewY += differenceY;
@@ -295,6 +308,11 @@ if(canvas){
         }*/
 
         // Draw player UI
+        // Draw pointer
+        /*
+        var pointerImage = new Image();
+        pointerImage.src = './images/ui/pointer.png';
+        ctx.drawImage(pointerImage, aimPointer.x + 1, aimPointer.y + 1);*/
         // Ammo UI
         ctx.font = '56px serif';
         ctx.textAlign = 'right';
@@ -408,8 +426,6 @@ window.onload = function(){
     });
 }
 
-var energyRechargeSpeed = 100/(60*4); // 4 seconds
-var reloadTime = 60*3; // 3 seconds
 var spawnPositions = [
     {'x':150, 'y':150},
     {'x':1130, 'y':150},
@@ -502,10 +518,10 @@ function getMousePosition(e) {
     var canvasRect = canvas.getBoundingClientRect();
     mouseX = e.clientX - canvasRect.left + viewX;
     mouseY = e.clientY - canvasRect.top + viewY;
-    mouseTankOffsetX = mouseX - tankToControl.x - tankToControl.width/2;
-    mouseTankOffsetY = mouseY - tankToControl.y - tankToControl.height/2;
-    pointer.x = mouseX - 1 + viewX;
-    pointer.y = mouseY - 1 + viewY;
+    if (tankToControl != null) {
+        mouseTankOffsetX = mouseX - tankToControl.x - tankToControl.width/2;
+        mouseTankOffsetY = mouseY - tankToControl.y - tankToControl.height/2;
+    }
 }
 
 // Tank movement input
@@ -541,6 +557,9 @@ function checkInput(tankToControl) {
     }
     // Get turret target rotation
     var turretTargetRotation = Math.atan2(mouseTankOffsetY, mouseTankOffsetX) * 180 / Math.PI;
+    // Position pointer at aim position
+    aimPointer.x = tank.x + mouseTankOffsetX + 21;
+    aimPointer.y = tank.y + mouseTankOffsetY + 21;
 
     /*
     // Calculate the difference between target and current rotation
@@ -562,20 +581,19 @@ function checkInput(tankToControl) {
     if (xaxis != 0 || yaxis != 0) {
         if (!spacebar) {
             // Set max speed
-            tank.maxSpeed = 3.5;
+            tank.maxSpeed = tankMoveSpeed;
         } else
         if (spacebar && tank.energy > 0) {
             // Set max speed
-            tank.maxSpeed = 4.5;
+            tank.maxSpeed = tankBoostSpeed;
             // Drain energy
             tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
         }
 
         // Drive forward
         if (tank.movementSpeed < tank.maxSpeed) {
-            var acceleration = tank.maxSpeed/6;
             // Makes sure speed doesn't exceed maxspeed
-            var speedIncrease = Math.min(acceleration, tank.maxSpeed - tank.movementSpeed);
+            var speedIncrease = Math.min(tankAcceleration, tank.maxSpeed - tank.movementSpeed);
             tank.movementSpeed += speedIncrease;
         }
 
@@ -587,7 +605,7 @@ function checkInput(tankToControl) {
         difference += (difference>180) ? -360 : (difference<-180) ? 360 : 0
 
         //Rotate towards targetRotation
-        tank.rotation += clamp(difference, -rotationSpeed, rotationSpeed);
+        tank.rotation += clamp(difference, -turnSpeed, turnSpeed);
     }
 
     // Shoot if mouse is pressed
@@ -602,21 +620,20 @@ function shoot(tank) {
         tank.ammo--;
 
         // Reset shootDelayTimer
-        tank.shootDelayTimer = 60/5; // 5 shots per second
+        tank.shootDelayTimer = attackSpeed;
 
         var bulletSpawnDistance = 1.7;
 
         // Randomize bullet direction by(-2;2) degrees
         var bulletDirection = tank.turretRotation + (Math.random() * 4) - 2;
-        var bulletSpeed = 12;
 
         // Calculate bullet xspd and yspd based on turrets direction
         var xspd = bulletSpeed*Math.cos(bulletDirection * Math.PI / 180);
         var yspd = bulletSpeed*Math.sin(bulletDirection * Math.PI / 180);
 
-        // Apply knockback to tank
-        tank.xknockback = -xspd * .2;
-        tank.yknockback = -yspd * .2;
+        // Apply knockback to players tank
+        tank.xknockback = -xspd * shotKnockbackMultiplier;
+        tank.yknockback = -yspd * shotKnockbackMultiplier;
 
         // Get the x and y spawn position and center it
         var xSpawn = (tank.x + tank.width / 2) + (xspd * bulletSpawnDistance) - 10;
@@ -628,7 +645,7 @@ function shoot(tank) {
         // Create a bullet
         var bullet = {
             'team': tank.team,
-            'damage': 20,
+            'damage': bulletDamage,
             'xspd': xspd,
             'yspd': yspd,
             'rotation':tank.turretRotation,
@@ -651,7 +668,7 @@ function shoot(tank) {
 }
 
 function reload(tank) {
-    if (tank.reloadTimer == -1 && tank.ammo < 10) {
+    if (tank.reloadTimer == -1 && tank.ammo < maxAmmo) {
         tank.reloadTimer = reloadTime;
         tank.ammo = 0;
     }
@@ -710,10 +727,10 @@ function updateTanks() {
         if (tank.reloadTimer > 0) {
             tank.reloadTimer --;
         } else
-        // Reload if the timer has ran out
+        // If the timer has ran out, reset it and restore ammo
         if (tank.reloadTimer == 0) {
             tank.reloadTimer = -1;
-            tank.ammo = 10;
+            tank.ammo = maxAmmo;
         }
 
         // Update the shoot delay timer
@@ -726,24 +743,15 @@ function updateTanks() {
         tank.yspd = tank.movementSpeed*Math.sin(tank.rotation * Math.PI / 180);
 
         // Apply knockback
-        var tankFriction = .9; // max 1 - no friction, min 0 - instantly stops
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
 
         tankMove(tank);
 
         // Apply friction to speed
-
-        tank.xknockback *= tankFriction;
-        tank.yknockback *= tankFriction;
-        tank.movementSpeed *= .9;
-        // tank.xspd *= .1;
-        // tank.yspd *= .1;
-
-        // Move the tank
-        // tank.xspd = xspd;
-        // tank.yspd = yspd;
-
+        tank.xknockback *= knockbackFriction;
+        tank.yknockback *= knockbackFriction;
+        tank.movementSpeed *= movementFriction;
     }
     // Send new tank position information to server
     socket.emit("update tank positions", tankToControl);

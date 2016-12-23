@@ -15,10 +15,10 @@ function updateTanks() {
         if (tank.reloadTimer > 0) {
             tank.reloadTimer --;
         } else
-        // Reload if the timer has ran out
+        // If the timer has ran out, reset it and restore ammo
         if (tank.reloadTimer == 0) {
             tank.reloadTimer = -1;
-            tank.ammo = 10;
+            tank.ammo = maxAmmo;
         }
 
         // Update the shoot delay timer
@@ -31,24 +31,15 @@ function updateTanks() {
         tank.yspd = tank.movementSpeed*Math.sin(tank.rotation * Math.PI / 180);
 
         // Apply knockback
-        var tankFriction = .9; // max 1 - no friction, min 0 - instantly stops
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
 
         tankMove(tank);
 
         // Apply friction to speed
-
-        tank.xknockback *= tankFriction;
-        tank.yknockback *= tankFriction;
-        tank.movementSpeed *= .9;
-        // tank.xspd *= .1;
-        // tank.yspd *= .1;
-
-        // Move the tank
-        // tank.xspd = xspd;
-        // tank.yspd = yspd;
-
+        tank.xknockback *= knockbackFriction;
+        tank.yknockback *= knockbackFriction;
+        tank.movementSpeed *= movementFriction;
     }
     // Send new tank position information to server
     socket.emit("update tank positions", tankToControl);

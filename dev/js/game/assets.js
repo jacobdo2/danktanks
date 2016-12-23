@@ -62,7 +62,7 @@ var buttons = [
         'height':50
     }
 ];*/
-var pointer = {
+var aimPointer = {
     'x':0,
     'y':0,
     'width':2,
@@ -93,7 +93,20 @@ var spacebar;
 var tankToControl = tanks[0];
 
 // Tank parameters
-var rotationSpeed = 4;
+var turnSpeed = 240/60; // How fast tank turns, degrees per second, 240 degrees
+var attackSpeed = 60/5; // Time before you can shoot again, 5 shots a second
+var energyRechargeSpeed = 100/(60*4); // Amount of energy it refills in 1/60th second
+var reloadTime = 2*60; // Time it takes to reload, seconds
+var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
+var movementFriction = .9; // Multiplier, how fast tank stops from moving
+var maxAmmo = 10; // How many bullets tank can hold
+var hitKnockbackMultiplier = 0.5; // How strong knockback is from bullet, multiplies bullet's speed
+var shotKnockbackMultiplier = 0.4; // How strong tank gets knocked back when shooting, multiplies bullet's speed
+var tankMoveSpeed = 3.5; // Top speed of tank when driving
+var tankBoostSpeed = 4.5; // Top speed of tank while boosting
+var tankAcceleration = tankMoveSpeed/6; // Acceleration amount in a frame
+var bulletSpeed = 12; // How fast bullet moves, pixels/frame
+var bulletDamage = 20;
 
 var ticker;
-var gameStarted = true;
+var gameStarted = true; // Whether or not players can control tanks

@@ -24,7 +24,6 @@ if(canvas){
         var differenceY = tankToControl.y - viewY - viewH/2;
 
         // Move the view
-        console.log(differenceX +' '+ differenceY);
         ctx.translate(-differenceX, -differenceY);
         viewX += differenceX;
         viewY += differenceY;
@@ -162,6 +161,11 @@ if(canvas){
         }*/
 
         // Draw player UI
+        // Draw pointer
+        /*
+        var pointerImage = new Image();
+        pointerImage.src = './images/ui/pointer.png';
+        ctx.drawImage(pointerImage, aimPointer.x + 1, aimPointer.y + 1);*/
         // Ammo UI
         ctx.font = '56px serif';
         ctx.textAlign = 'right';
