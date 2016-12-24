@@ -97,14 +97,15 @@ var turnSpeed = 240/60; // How fast tank turns, degrees per second, 240 degrees
 var attackSpeed = 60/5; // Time before you can shoot again, 5 shots a second
 var energyRechargeSpeed = 100/(60*4); // Amount of energy it refills in 1/60th second
 var reloadTime = 2*60; // Time it takes to reload, seconds
-var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
-var movementFriction = .9; // Multiplier, how fast tank stops from moving
 var maxAmmo = 10; // How many bullets tank can hold
 var hitKnockbackMultiplier = 0.5; // How strong knockback is from bullet, multiplies bullet's speed
 var shotKnockbackMultiplier = 0.4; // How strong tank gets knocked back when shooting, multiplies bullet's speed
 var tankMoveSpeed = 3.5; // Top speed of tank when driving
 var tankBoostSpeed = 4.5; // Top speed of tank while boosting
-var tankAcceleration = tankMoveSpeed/6; // Acceleration amount in a frame
+var tankAcceleration = tankMoveSpeed/60; // Acceleration amount in a frame
+var tankDeceleration = tankMoveSpeed/60; // Deceleration amount in a frame
+var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
+var movementFriction = .9; // Multiplier, how fast tank stops from moving
 var bulletSpeed = 12; // How fast bullet moves, pixels/frame
 var bulletDamage = 20;
 
@@ -584,7 +585,7 @@ function checkInput(tankToControl) {
             tank.maxSpeed = tankMoveSpeed;
         } else
         if (spacebar && tank.energy > 0) {
-            // Set max speed
+            // Set max speed higher
             tank.maxSpeed = tankBoostSpeed;
             // Drain energy
             tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
@@ -592,8 +593,13 @@ function checkInput(tankToControl) {
 
         // Drive forward
         if (tank.movementSpeed < tank.maxSpeed) {
+            // Apply acceleration (and deceleration, so effectively deceleration is 0 while driving)
             // Makes sure speed doesn't exceed maxspeed
-            var speedIncrease = Math.min(tankAcceleration, tank.maxSpeed - tank.movementSpeed);
+            var speedIncrease = Math.min(tankAcceleration + tankDeceleration, tank.maxSpeed - tank.movementSpeed);
+            // Increase acceleration if boosting
+            if (spacebar && tank.energy > 0) {
+                speedIncrease *= 2;
+            }
             tank.movementSpeed += speedIncrease;
         }
 
@@ -604,8 +610,10 @@ function checkInput(tankToControl) {
         var difference = targetRotation - tank.rotation;
         difference += (difference>180) ? -360 : (difference<-180) ? 360 : 0
 
+        // Calculate turn amount based on how fast tank is moving, so it can't rotate on the spot
+        var turnAmount = (turnSpeed / tankMoveSpeed) * tank.movementSpeed;
         //Rotate towards targetRotation
-        tank.rotation += clamp(difference, -turnSpeed, turnSpeed);
+        tank.rotation += clamp(difference, -turnAmount, turnAmount);
     }
 
     // Shoot if mouse is pressed
@@ -745,13 +753,15 @@ function updateTanks() {
         // Apply knockback
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
-
         tankMove(tank);
 
         // Apply friction to speed
         tank.xknockback *= knockbackFriction;
         tank.yknockback *= knockbackFriction;
-        tank.movementSpeed *= movementFriction;
+        // Slow down the tank linearly
+        if (tank.movementSpeed > 0) {
+            tank.movementSpeed -= Math.min(tankDeceleration, tank.movementSpeed);
+        }
     }
     // Send new tank position information to server
     socket.emit("update tank positions", tankToControl);

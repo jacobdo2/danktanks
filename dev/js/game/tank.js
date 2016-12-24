@@ -33,13 +33,15 @@ function updateTanks() {
         // Apply knockback
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
-
         tankMove(tank);
 
         // Apply friction to speed
         tank.xknockback *= knockbackFriction;
         tank.yknockback *= knockbackFriction;
-        tank.movementSpeed *= movementFriction;
+        // Slow down the tank linearly
+        if (tank.movementSpeed > 0) {
+            tank.movementSpeed -= Math.min(tankDeceleration, tank.movementSpeed);
+        }
     }
     // Send new tank position information to server
     socket.emit("update tank positions", tankToControl);

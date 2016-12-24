@@ -111,7 +111,7 @@ function checkInput(tankToControl) {
             tank.maxSpeed = tankMoveSpeed;
         } else
         if (spacebar && tank.energy > 0) {
-            // Set max speed
+            // Set max speed higher
             tank.maxSpeed = tankBoostSpeed;
             // Drain energy
             tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
@@ -119,8 +119,13 @@ function checkInput(tankToControl) {
 
         // Drive forward
         if (tank.movementSpeed < tank.maxSpeed) {
+            // Apply acceleration (and deceleration, so effectively deceleration is 0 while driving)
             // Makes sure speed doesn't exceed maxspeed
-            var speedIncrease = Math.min(tankAcceleration, tank.maxSpeed - tank.movementSpeed);
+            var speedIncrease = Math.min(tankAcceleration + tankDeceleration, tank.maxSpeed - tank.movementSpeed);
+            // Increase acceleration if boosting
+            if (spacebar && tank.energy > 0) {
+                speedIncrease *= 2;
+            }
             tank.movementSpeed += speedIncrease;
         }
 
@@ -131,8 +136,10 @@ function checkInput(tankToControl) {
         var difference = targetRotation - tank.rotation;
         difference += (difference>180) ? -360 : (difference<-180) ? 360 : 0
 
+        // Calculate turn amount based on how fast tank is moving, so it can't rotate on the spot
+        var turnAmount = (turnSpeed / tankMoveSpeed) * tank.movementSpeed;
         //Rotate towards targetRotation
-        tank.rotation += clamp(difference, -turnSpeed, turnSpeed);
+        tank.rotation += clamp(difference, -turnAmount, turnAmount);
     }
 
     // Shoot if mouse is pressed
