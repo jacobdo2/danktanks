@@ -432,6 +432,7 @@ if(canvas){
 
 
 
+<<<<<<< HEAD
 window.onload = function(){
     // var testTank = clone(defaultTank);
     // testTank.x = 1050;
@@ -457,6 +458,37 @@ window.onload = function(){
         }, 16.67);
     });
 }
+=======
+
+    window.onload = function(){
+        // var testTank = clone(defaultTank);
+        // testTank.x = 1050;
+        // tanks.push(testTank);
+        console.log("testing branch");
+        var userTank = clone(defaultTank);
+        socket.on('join game', function(response){
+            var response = JSON.parse(response);
+            clientId = response.userId;
+            userTank.userId = response.userId;
+            userTank.name = response.username;
+            userTank.team = response.userId;
+            tankToControl = userTank;
+            tanks.push(userTank);
+
+            ticker = setInterval(function () {
+                if (gameStarted) {
+                    checkInput(userTank);
+                    moveBullets();
+                    updateTanks();
+
+                }
+                draw();
+            }, 16.67);
+        });
+    }
+
+
+>>>>>>> 4d1a1db0b31834df754a6c9c653e081772b02a79
 
 var spawnPositions = [
     {'x':150, 'y':150},

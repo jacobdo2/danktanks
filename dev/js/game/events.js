@@ -8,6 +8,7 @@ window.onload = function(){
         var response = JSON.parse(response);
         clientId = response.userId;
         userTank.userId = response.userId;
+        userTank.name = response.username;
         userTank.team = response.userId;
         tankToControl = userTank;
         tanks.push(userTank);
@@ -22,4 +23,4 @@ window.onload = function(){
             draw();
         }, 16.67);
     });
-}
+};

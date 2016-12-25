@@ -69,14 +69,28 @@ $('.btn-start-quickplay').on('click tap', function(){
         return false;
     }
 
-    //set item in localstorage
-    localStorage.setItem('name', name);
+    //set name in the session
+    $.ajax('/set-username', {
+        data: {"username":name},
+        dataType: 'json',
+        method: "post"
+    }).done(function(response){
+        console.log('testing');
+        if(response.status == 'success')
+        {
+            //player name set, redirect to game
+                window.location.replace('/game');
+        }
+    })
 
-    //TODO: set name in db
+});
 
-    //redirect player to game
-    window.location.replace('/game');
+/**
+ * Keep label on top of input, if the input is filled upon blur
+ */
 
+$('.input-group input').on('blur', function(){
+    ($(this).val()) ? $(this).addClass('filled') : $(this).removeClass('filled');
 });
 
 var snackbarTicker;

@@ -1,12 +1,20 @@
 var io = require('socket.io')(http);
 
+io.use(sharedSession(session, {
+    autoSave:true
+}));
+
 var usersConnected = 1;
 
 io.on('connection', function(socket){
-    console.log("connected");
+
     usersConnected++;
-    // Send user id
-    var response = {'userId':usersConnected};
+    // Send user id and user name
+
+    //retrieve entered username from the session
+    var username = socket.handshake.session.username;
+
+    var response = {'userId':usersConnected, 'username':username};
     socket.emit('join game', JSON.stringify(response));
 
     // Update tank positions for connected clients
