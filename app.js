@@ -58,8 +58,16 @@ io.on('connection', function(socket){
 
     //retrieve entered username from the session
     var username = socket.handshake.session.username;
+    var response = {};
+    if(!username){
+        response.status = 'error';
+    }
+    else {
+        response.status = 'success';
+        response.userId = usersConnected;
+        response.username = username;
+    }
 
-    var response = {'userId':usersConnected, 'username':username};
     socket.emit('join game', JSON.stringify(response));
 
     // Update tank positions for connected clients

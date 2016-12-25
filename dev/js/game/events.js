@@ -7,6 +7,12 @@
         var userTank = clone(defaultTank);
         socket.on('join game', function(response){
             var response = JSON.parse(response);
+
+            if(response.status == 'error'){
+                //send back to main menu if no username entered
+                window.location.replace('/');
+            }
+
             clientId = response.userId;
             userTank.userId = response.userId;
             userTank.name = response.username;
