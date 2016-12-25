@@ -1,17 +1,229 @@
+var canvas  = document.querySelector("#game-canvas");
+/*
+canvas.width  = canvas.scrollWidth;
+canvas.height = canvas.scrollHeight;*/
+canvas.width  = 1280;
+canvas.height = 720;
+
+var ctx = canvas.getContext('2d');
+
+//Draw the game
+function draw() {
+    // Draw background
+    ctx.fillStyle = 'green';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw level bottom part
+    for (var i = 0; i < level.length; i++) {
+        // Probably use this switch for images
+        switch(level[i].type) {
+            case 'platform':
+                break;
+        }
+        var obj = level[i];
+        var x = obj.x;
+        var y = obj.y;
+        var w = obj.width;
+        var h = obj.height;
+
+        // Draw object bottom
+        ctx.fillStyle = '#3c3636';
+        ctx.fillRect(x, y, w, h);
+    }
+
+    // Sort tanks so they draw in correct order
+    tanks.sort(function(a, b) {
+        return a.y - b.y;
+    });
+    // Draw tanks
+    for (var t = 0; t < tanks.length; t++) {
+        var tank = tanks[t];
+        //Draw tank
+        ctx.fillStyle = 'green';
+        var tankX = tank.x + 4;
+        var tankY = tank.y + 4;
+        var tankW = 64;
+        var tankH = 64;
+        var tankR = tank.rotation * Math.PI / 180;
+        var tankTR = tank.turretRotation * Math.PI / 180;
+        //ctx.fillRect(x, y, w, h);
+        //drawRotated(ctx, x, y, w, h, r);
+
+        // Draw tank shadow
+        var shadow = new Image();
+        shadow.src = './images/tank/tankShadow.png';
+        drawImageRotatedSliced(ctx, shadow, 0, 0, 64, 64, tankX, tankY, tankW, tankH, tankR);
+
+        // Draw tank treads
+        var treads = new Image();
+        treads.src = './images/tank/tankTreads.png';
+        for (i = 0; i < 7; i++) {
+            drawImageRotatedSliced(ctx, treads, 64 * i, 0, 64, 64, tankX, tankY - i * 2, tankW, tankH, tankR);
+        }
+
+        // Draw tank body
+        var body = new Image();
+        body.src = './images/tank/tankBody.png';
+        for (i = 0; i < 3; i++) {
+            drawImageRotatedSliced(ctx, body, 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
+        }
+
+        // Draw tank turret
+        var turret = new Image();
+        turret.src = './images/tank/tankTurret.png';
+        for (i = 0; i < 12; i++) {
+            drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
+        }
+
+        // Draw UI
+        var uiBarBg = new Image();
+        uiBarBg.src = './images/ui/uiBarBg.png';
+        var uiBarGlass = new Image();
+        uiBarGlass.src = './images/ui/uiBarGlass.png';
+        // Armor bar
+        ctx.drawImage(uiBarBg, tankX, tankY - 40, 64, 8);
+
+        var armorBar = new Image();
+        armorBar.src = './images/ui/armorBar.png';
+        var hpPercentage = tank.hp / tank.maxHp;
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 64, 4, tankX, tankY - 40, hpPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 40, 64, 8);
+
+        // Energy bar
+        ctx.drawImage(uiBarBg, tankX, tankY - 32, 64, 8);
+
+        var energyBar = new Image();
+        energyBar.src = './images/ui/energyBar.png';
+        var energyBarPercentage = tank.energy / 100;
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 64, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
+
+        ctx.drawImage(uiBarGlass, tankX, tankY - 32, 64, 8);
+
+        // Draw ammo
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        // If not reloading
+        if (tank.ammo >= 0 && tank.reloadTimer <= 0) {
+            ctx.fillText(""+tank.ammo, tankX + 32, tankY + 80);
+        } else if (tank.reloadTimer > 0) {
+            ctx.fillText("Reloading", tankX + 32, tankY + 80);
+        }
+
+        // Draw player id
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'black';
+        ctx.fillText(""+tank.userId, tankX + 32, tankY - 50);
+    }
+    // Draw bullets
+    for (var i = 0; i < bullets.length; i++) {
+        var bullet = bullets[i];
+        var x = bullet.x;
+        var y = bullet.y;
+        var w = bullet.width;
+        var h = bullet.height;
+        var r = bullet.rotation * Math.PI / 180;
+
+        // Draw bullet shadow
+        var bulletShadow = new Image();
+        bulletShadow.src = './images/tank/bulletShadow.png';
+        drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
+
+        // Draw bullet
+        var bullet = new Image();
+        bullet.src = './images/tank/bullet.png';
+        drawImageRotated(ctx, bullet, x , y-24, 20, 10, r);
+    }
+
+    // Draw level top part
+    for (var i = 0; i < level.length; i++) {
+        // Probably use this switch for images
+        switch(level[i].type) {
+            case 'platform':
+                break;
+        }
+        var obj = level[i];
+        var x = obj.x;
+        var y = obj.y;
+        var w = obj.width;
+        var h = obj.height;
+
+        // Draw object top
+        ctx.fillStyle = '#5a5251';
+        ctx.fillRect(x, y-50, w, h);
+    }
+
+    // Draw buttons
+    for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        var text = button.buttonText;
+        var x = button.x;
+        var y = button.y;
+        var w = button.width;
+        var h = button.height;
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(x, y, w, h);
+
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.fillText(text, x + w/2, y+h/2);
+    }
+}
+
+function drawRotated(ctx, x, y, width, height, rotation) {
+
+    var halfWidth = width / 2;
+    var halfHeight = height / 2;
+
+    ctx.save();
+
+    ctx.translate(x + halfWidth, y + halfHeight);
+    ctx.rotate(rotation);
+    ctx.fillRect(-halfWidth, -halfHeight, width, height);
+
+    ctx.restore();
+}
+
+function drawImageRotated(ctx, image, x, y, width, height, rotation) {
+
+    var halfWidth = width / 2;
+    var halfHeight = height / 2;
+
+    ctx.save();
+
+    ctx.translate(x + halfWidth, y + halfHeight);
+    ctx.rotate(rotation);
+    ctx.drawImage(image, -halfHeight, -halfHeight, width, height);
+
+    ctx.restore();
+}
+
+function drawImageRotatedSliced(ctx, image, sliceX, sliceY, sliceWidth, sliceHeight, x, y, width, height, rotation) {
+
+    var halfWidth = width / 2;
+    var halfHeight = height / 2;
+
+    ctx.save();
+
+    ctx.translate(x + halfWidth, y + halfHeight);
+    ctx.rotate(rotation);
+    ctx.drawImage(image, sliceX, sliceY, sliceWidth, sliceHeight, -halfWidth, -halfHeight, width, height);
+
+    ctx.restore();
+}
+
 var clientId;
 
 var level = [
-    {'width':20000, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':50, 'height':20000, 'x': 0, 'y':0, 'type':'platform'},
-    {'width':20000, 'height':50, 'x': 0, 'y':19950, 'type':'platform'},
-    {'width':50, 'height':20000, 'x': 19950, 'y':0, 'type':'platform'},
-    {'width':300, 'height':50, 'x': 400, 'y':300, 'type':'platform'},
-    {'width':50, 'height':300, 'x': 1000, 'y':800, 'type':'platform'},
-    {'width':200, 'height':200, 'x': 500, 'y':900, 'type':'platform'},
-    {'width':300, 'height':50, 'x': 400, 'y':2200, 'type':'platform'},
-    {'width':50, 'height':300, 'x': 1200, 'y':1300, 'type':'platform'},
-    {'width':300, 'height':50, 'x': 2700, 'y':1400, 'type':'platform'},
-    {'width':50, 'height':300, 'x': 2000, 'y':2800, 'type':'platform'}
+    {'width':1280, 'height':50, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':50, 'height':720, 'x': 0, 'y':0, 'type':'platform'},
+    {'width':1280, 'height':50, 'x': 0, 'y':670, 'type':'platform'},
+    {'width':50, 'height':720, 'x': 1230, 'y':0, 'type':'platform'},
+    {'width':640, 'height':300, 'x': 320, 'y':210, 'type':'platform'}
 ];
 // Tank: hp, team, movement speed, x, y, width, height, body rot, turret rot, xspd, yspd
 var defaultTank = {
@@ -22,7 +234,6 @@ var defaultTank = {
     'reloadTimer':0,
     'shootDelayTimer':0,
     'team':0,
-    'maxSpeed':3.5,
     'movementSpeed':0,
     'x':150,
     'y':150,
@@ -33,8 +244,7 @@ var defaultTank = {
     'xspd':0,
     'yspd':0,
     'xknockback':0,
-    'yknockback':0,
-    'name':'u/lordtuts'
+    'yknockback':0
 };
 var tanks = [
 
@@ -62,7 +272,7 @@ var buttons = [
         'height':50
     }
 ];*/
-var aimPointer = {
+var pointer = {
     'x':0,
     'y':0,
     'width':2,
@@ -75,42 +285,21 @@ var aimPointer = {
 // Driving direction axis
 var xaxis;
 var yaxis;
-
-// Mouse
-// Absolute position in game world
+// Mouse positions
 var mouseX;
 var mouseY;
-// Positon relative to tank
-var mouseTankOffsetX = 0;
-var mouseTankOffsetY = 0;
 // If mouse is pressed
 var mousepressed;
-
 // If spacebar is pressed
 var spacebar;
-
 // Currently controlling tank
 var tankToControl = tanks[0];
 
-// Tank parameters
-var turnSpeed = 240/60; // How fast tank turns, degrees per second, 240 degrees
-var attackSpeed = 60/5; // Time before you can shoot again, 5 shots a second
-var energyRechargeSpeed = 100/(60*4); // Amount of energy it refills in 1/60th second
-var reloadTime = 2*60; // Time it takes to reload, seconds
-var maxAmmo = 10; // How many bullets tank can hold
-var hitKnockbackMultiplier = 0.5; // How strong knockback is from bullet, multiplies bullet's speed
-var shotKnockbackMultiplier = 0.4; // How strong tank gets knocked back when shooting, multiplies bullet's speed
-var tankMoveSpeed = 3.5; // Top speed of tank when driving
-var tankBoostSpeed = 4.5; // Top speed of tank while boosting
-var tankAcceleration = tankMoveSpeed/60; // Acceleration amount in a frame
-var tankDeceleration = tankMoveSpeed/60; // Deceleration amount in a frame
-var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
-var movementFriction = .9; // Multiplier, how fast tank stops from moving
-var bulletSpeed = 12; // How fast bullet moves, pixels/frame
-var bulletDamage = 20;
+// Tank parameter
+var rotationSpeed = 4;
 
 var ticker;
-var gameStarted = true; // Whether or not players can control tanks
+var gameStarted = true;
 function moveBullets() {
     for (var i = 0; i < bullets.length; i++) {
         var bullet = bullets[i];
@@ -139,9 +328,8 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
         var tank = tanks[t];
         if (tank.team != bullet.team && isCollide(bullet, tank, newX, newY)) {
             tank.hp -= bullet.damage;
-            // Apply knockback to tank that was hit
-            tank.xknockback = bullet.xspd * hitKnockbackMultiplier;
-            tank.yknockback = bullet.yspd * hitKnockbackMultiplier;
+            tank.xknockback = bullet.xspd * 0.2;
+            tank.yknockback = bullet.yspd * 0.2;
             bullets.splice(index, 1);
         }
     }
@@ -150,38 +338,19 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
 
 var canvas  = document.querySelector("#game-canvas");
 if(canvas){
-
-    canvas.width  = canvas.scrollWidth;
-    canvas.height = canvas.scrollHeight;
-    // canvas.width  = 1280;
-    // canvas.height = 720;
-
-    var viewX = 0;
-    var viewY = 0;
-    var viewW = 1280;
-    var viewH = 720;
+    /*
+     canvas.width  = canvas.scrollWidth;
+     canvas.height = canvas.scrollHeight;*/
+    canvas.width  = 1280;
+    canvas.height = 720;
 
     var ctx = canvas.getContext('2d');
 
 //Draw the game
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-
-        // Center view to the tank
-        var differenceX = tankToControl.x - viewX - viewW/2;
-        var differenceY = tankToControl.y - viewY - viewH/2;
-
-        // Move the view
-        ctx.translate(-differenceX, -differenceY);
-        viewX += differenceX;
-        viewY += differenceY;
-
         // Draw background
-        var backgroundImage = new Image();
-        backgroundImage.src = './images/environment/concrete.png';
-        var pattern = ctx.createPattern(backgroundImage, 'repeat');
-        ctx.fillStyle = pattern;
-        ctx.fillRect(-2000, -2000, 24000, 24000);
+        ctx.fillStyle = 'green';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw level bottom part
         for (var i = 0; i < level.length; i++) {
@@ -222,35 +391,63 @@ if(canvas){
             // Draw tank shadow
             var shadow = new Image();
             shadow.src = './images/tank/tankShadow.png';
-            drawImageRotatedSliced(ctx, shadow, 0, 0, 64, 64, tankX, tankY, tankW, tankH, tankR);
+            drawImageRotatedSliced(ctx, shadow, 0, 0, 32, 32, tankX, tankY, tankW, tankH, tankR);
 
             // Draw tank treads
             var treads = new Image();
             treads.src = './images/tank/tankTreads.png';
             for (i = 0; i < 7; i++) {
-                drawImageRotatedSliced(ctx, treads, 64 * i, 0, 64, 64, tankX, tankY - i * 2, tankW, tankH, tankR);
+                drawImageRotatedSliced(ctx, treads, 32 * i, 0, 32, 32, tankX, tankY - i * 2, tankW, tankH, tankR);
             }
 
             // Draw tank body
             var body = new Image();
             body.src = './images/tank/tankBody.png';
             for (i = 0; i < 3; i++) {
-                drawImageRotatedSliced(ctx, body, 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
+                drawImageRotatedSliced(ctx, body, 32 * i, 0, 32, 32, tankX, tankY - i * 2 - 13, tankW, tankH, tankR);
             }
 
             // Draw tank turret
             var turret = new Image();
             turret.src = './images/tank/tankTurret.png';
             for (i = 0; i < 12; i++) {
-                drawImageRotatedSliced(ctx, turret, 1 + 64 * i, 0, 64, 64, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
+                drawImageRotatedSliced(ctx, turret, 1 + 32 * i, 0, 32, 32, tankX, tankY - i * 2 - 19, tankW, tankH, tankTR);
             }
-            // Draw tank name
-            ctx.font = '18px serif';
+
+            // Draw UI
+            // Armor bar
+            var armorBarBg = new Image();
+            armorBarBg.src = './images/ui/armorBarBg.png';
+            ctx.drawImage(armorBarBg, tankX, tankY - 40, 64, 8);
+
+            var armorBar = new Image();
+            armorBar.src = './images/ui/armorBar.png';
+
+            var hpPercentage = tank.hp / tank.maxHp;
+            ctx.drawImage(armorBar, 0, 0, hpPercentage * 32, 4, tankX, tankY - 40, hpPercentage * 64, 8);
+
+            // Energy bar
+            var energyBarBg = new Image();
+            energyBarBg.src = './images/ui/energyBarBg.png';
+            ctx.drawImage(energyBarBg, tankX, tankY - 32, 64, 8);
+
+            var energyBar = new Image();
+            energyBar.src = './images/ui/energyBar.png';
+
+            var energyBarPercentage = tank.energy / 100;
+            ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 32, 4, tankX, tankY - 32, energyBarPercentage * 64, 8);
+
+            // Draw ammo
+            ctx.font = '24px serif';
             ctx.textAlign = 'center';
             ctx.fillStyle = 'black';
-            ctx.fillText(""+tank.name, tankX + tankW / 2, tankY - 24);
+            // If not reloading
+            if (tank.ammo >= 0 && tank.reloadTimer <= 0) {
+                ctx.fillText(""+tank.ammo, tankX + 32, tankY + 80);
+            } else if (tank.reloadTimer > 0) {
+                ctx.fillText("Reloading", tankX + 32, tankY + 80);
+            }
         }
-
         // Draw bullets
         for (var i = 0; i < bullets.length; i++) {
             var bullet = bullets[i];
@@ -260,10 +457,9 @@ if(canvas){
             var h = bullet.height;
             var r = bullet.rotation * Math.PI / 180;
 
-            // Draw bullet shadow
-            var bulletShadow = new Image();
-            bulletShadow.src = './images/tank/bulletShadow.png';
-            drawImageRotated(ctx, bulletShadow, x , y, 20, 10, r);
+            // Draw shadow
+            // ctx.fillStyle = 'gray';
+            // ctx.fillRect(x, y, w, h);
 
             // Draw bullet
             var bullet = new Image();
@@ -290,7 +486,6 @@ if(canvas){
         }
 
         // Draw buttons
-        /*
         for (var i = 0; i < buttons.length; i++) {
             var button = buttons[i];
             var text = button.buttonText;
@@ -306,54 +501,7 @@ if(canvas){
             ctx.textAlign = 'center';
             ctx.fillStyle = 'white';
             ctx.fillText(text, x + w/2, y+h/2);
-        }*/
-
-        // Draw player UI
-        // Draw pointer
-        /*
-        var pointerImage = new Image();
-        pointerImage.src = './images/ui/pointer.png';
-        ctx.drawImage(pointerImage, aimPointer.x + 1, aimPointer.y + 1);*/
-        // Ammo UI
-        ctx.font = '56px serif';
-        ctx.textAlign = 'right';
-        ctx.fillStyle = 'black';
-        var ammoTextX = viewX + viewW - 30;
-        var ammoTextY = viewY + viewH - 30;
-        // Draw ammo text
-        if (tankToControl.ammo > 0 && tank.reloadTimer <= 0) {
-            ctx.fillText(""+tankToControl.ammo, ammoTextX, ammoTextY);
-        } else if (tankToControl.reloadTimer > 0) {
-            ctx.fillText("Reloading", ammoTextX, ammoTextY);
         }
-
-        // Armor and energy bars
-        // Get background and glass image
-        var uiBarBg = new Image();
-        uiBarBg.src = './images/ui/uiBarBg.png';
-        var uiBarGlass = new Image();
-        uiBarGlass.src = './images/ui/uiBarGlass.png';
-        // Armor bar
-        // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 128, 256, 64);
-        // Armor bar
-        var armorBar = new Image();
-        armorBar.src = './images/ui/armorBar.png';
-        var hpPercentage = tank.hp / tank.maxHp;
-        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX, viewY + viewH - 128, hpPercentage * 256, 64);
-        // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 128, 256, 64);
-
-        // Energy bar
-        // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 64, 256, 64);
-        // Energy bar
-        var energyBar = new Image();
-        energyBar.src = './images/ui/energyBar.png';
-        var energyBarPercentage = tank.energy / 100;
-        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX, viewY + viewH - 64, energyBarPercentage * 256, 64);
-        // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 64, 256, 64);
     }
 
     function drawRotated(ctx, x, y, width, height, rotation) {
@@ -401,36 +549,34 @@ if(canvas){
 
 
 
+window.onload = function(){
+    // var testTank = clone(defaultTank);
+    // testTank.x = 1050;
+    // tanks.push(testTank);
+    console.log("testing branch");
+    var userTank = clone(defaultTank);
+    socket.on('join game', function(response){
+        var response = JSON.parse(response);
+        clientId = response.userId;
+        userTank.userId = response.userId;
+        userTank.team = response.userId;
+        tankToControl = userTank;
+        tanks.push(userTank);
 
-    window.onload = function(){
-        // var testTank = clone(defaultTank);
-        // testTank.x = 1050;
-        // tanks.push(testTank);
-        console.log("testing branch");
-        var userTank = clone(defaultTank);
-        socket.on('join game', function(response){
-            var response = JSON.parse(response);
-            clientId = response.userId;
-            userTank.userId = response.userId;
-            userTank.name = response.username;
-            userTank.team = response.userId;
-            tankToControl = userTank;
-            tanks.push(userTank);
+        ticker = setInterval(function () {
+            if (gameStarted) {
+                checkInput(userTank);
+                moveBullets();
+                updateTanks();
 
-            ticker = setInterval(function () {
-                if (gameStarted) {
-                    checkInput(userTank);
-                    moveBullets();
-                    updateTanks();
+            }
+            draw();
+        }, 16.67);
+    });
+}
 
-                }
-                draw();
-            }, 16.67);
-        });
-    }
-
-
-
+var energyRechargeSpeed = 100/(60*4); // 4 seconds
+var reloadTime = 60*3; // 3 seconds
 var spawnPositions = [
     {'x':150, 'y':150},
     {'x':1130, 'y':150},
@@ -521,12 +667,10 @@ canvas.addEventListener("mouseup", function(e){
 
 function getMousePosition(e) {
     var canvasRect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - canvasRect.left + viewX;
-    mouseY = e.clientY - canvasRect.top + viewY;
-    if (tankToControl != null) {
-        mouseTankOffsetX = mouseX - tankToControl.x - tankToControl.width/2;
-        mouseTankOffsetY = mouseY - tankToControl.y - tankToControl.height/2;
-    }
+    mouseX = e.clientX - canvasRect.left;
+    mouseY = e.clientY - canvasRect.top;
+    pointer.x = mouseX - 1;
+    pointer.y = mouseY - 1;
 }
 
 // Tank movement input
@@ -535,7 +679,7 @@ function checkInput(tankToControl) {
     if (tank == null) {
         return;
     }
-    //tank.movementSpeed = 0;
+    tank.movementSpeed = 0;
     xaxis = 0;
     yaxis = 0;
     // For button codes refer to:
@@ -561,11 +705,9 @@ function checkInput(tankToControl) {
         tank.turretRotation += 360;
     }
     // Get turret target rotation
-    var turretTargetRotation = Math.atan2(mouseTankOffsetY, mouseTankOffsetX) * 180 / Math.PI;
-    // Position pointer at aim position
-    aimPointer.x = tank.x + mouseTankOffsetX + 21;
-    aimPointer.y = tank.y + mouseTankOffsetY + 21;
-
+    var distToMouseX = mouseX - tank.x - tank.width/2;
+    var distToMouseY = mouseY - tank.y - tank.height/2;
+    var turretTargetRotation = Math.atan2(distToMouseY, distToMouseX) * 180 / Math.PI;
     /*
     // Calculate the difference between target and current rotation
     var turrDifference = turretTargetRotation - tank.turretRotation;
@@ -582,29 +724,15 @@ function checkInput(tankToControl) {
         tank.rotation += 360;
     }
 
-    // Check movement input
+    // If there's input, rotate towards target direction
     if (xaxis != 0 || yaxis != 0) {
-        if (!spacebar) {
-            // Set max speed
-            tank.maxSpeed = tankMoveSpeed;
-        } else
-        if (spacebar && tank.energy > 0) {
-            // Set max speed higher
-            tank.maxSpeed = tankBoostSpeed;
-            // Drain energy
-            tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
-        }
-
         // Drive forward
-        if (tank.movementSpeed < tank.maxSpeed) {
-            // Apply acceleration (and deceleration, so effectively deceleration is 0 while driving)
-            // Makes sure speed doesn't exceed maxspeed
-            var speedIncrease = Math.min(tankAcceleration + tankDeceleration, tank.maxSpeed - tank.movementSpeed);
-            // Increase acceleration if boosting
-            if (spacebar && tank.energy > 0) {
-                speedIncrease *= 2;
-            }
-            tank.movementSpeed += speedIncrease;
+        tank.movementSpeed = 3.5;
+
+        // Boosting
+        if (spacebar && tank.energy > 0) {
+            tank.movementSpeed += 1;
+            tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
         }
 
         // Calculate target rotation
@@ -614,10 +742,8 @@ function checkInput(tankToControl) {
         var difference = targetRotation - tank.rotation;
         difference += (difference>180) ? -360 : (difference<-180) ? 360 : 0
 
-        // Calculate turn amount based on how fast tank is moving, so it can't rotate on the spot
-        var turnAmount = (turnSpeed / tankMoveSpeed) * tank.movementSpeed;
         //Rotate towards targetRotation
-        tank.rotation += clamp(difference, -turnAmount, turnAmount);
+        tank.rotation += clamp(difference, -rotationSpeed, rotationSpeed);
     }
 
     // Shoot if mouse is pressed
@@ -632,20 +758,21 @@ function shoot(tank) {
         tank.ammo--;
 
         // Reset shootDelayTimer
-        tank.shootDelayTimer = attackSpeed;
+        tank.shootDelayTimer = 60/5; // 5 shots per second
 
         var bulletSpawnDistance = 1.7;
 
         // Randomize bullet direction by(-2;2) degrees
         var bulletDirection = tank.turretRotation + (Math.random() * 4) - 2;
+        var bulletSpeed = 12;
 
         // Calculate bullet xspd and yspd based on turrets direction
         var xspd = bulletSpeed*Math.cos(bulletDirection * Math.PI / 180);
         var yspd = bulletSpeed*Math.sin(bulletDirection * Math.PI / 180);
 
-        // Apply knockback to players tank
-        tank.xknockback = -xspd * shotKnockbackMultiplier;
-        tank.yknockback = -yspd * shotKnockbackMultiplier;
+        // Apply knockback to tank
+        tank.xknockback = -xspd * .2;
+        tank.yknockback = -yspd * .2;
 
         // Get the x and y spawn position and center it
         var xSpawn = (tank.x + tank.width / 2) + (xspd * bulletSpawnDistance) - 10;
@@ -657,7 +784,7 @@ function shoot(tank) {
         // Create a bullet
         var bullet = {
             'team': tank.team,
-            'damage': bulletDamage,
+            'damage': 20,
             'xspd': xspd,
             'yspd': yspd,
             'rotation':tank.turretRotation,
@@ -680,7 +807,7 @@ function shoot(tank) {
 }
 
 function reload(tank) {
-    if (tank.reloadTimer == -1 && tank.ammo < maxAmmo) {
+    if (tank.reloadTimer == -1 && tank.ammo < 10) {
         tank.reloadTimer = reloadTime;
         tank.ammo = 0;
     }
@@ -739,10 +866,10 @@ function updateTanks() {
         if (tank.reloadTimer > 0) {
             tank.reloadTimer --;
         } else
-        // If the timer has ran out, reset it and restore ammo
+        // Reload if the timer has ran out
         if (tank.reloadTimer == 0) {
             tank.reloadTimer = -1;
-            tank.ammo = maxAmmo;
+            tank.ammo = 10;
         }
 
         // Update the shoot delay timer
@@ -755,17 +882,18 @@ function updateTanks() {
         tank.yspd = tank.movementSpeed*Math.sin(tank.rotation * Math.PI / 180);
 
         // Apply knockback
+        var tankFriction = .9; // max 1 - no friction, min 0 - instantly stops
         tank.xspd += tank.xknockback;
         tank.yspd += tank.yknockback;
+        tank.xknockback *= tankFriction;
+        tank.yknockback *= tankFriction;
+
         tankMove(tank);
 
-        // Apply friction to speed
-        tank.xknockback *= knockbackFriction;
-        tank.yknockback *= knockbackFriction;
-        // Slow down the tank linearly
-        if (tank.movementSpeed > 0) {
-            tank.movementSpeed -= Math.min(tankDeceleration, tank.movementSpeed);
-        }
+        // Move the tank
+        // tank.xspd = xspd;
+        // tank.yspd = yspd;
+
     }
     // Send new tank position information to server
     socket.emit("update tank positions", tankToControl);
@@ -853,3 +981,132 @@ function isCollide(a, b, newX, newY) {
         (newX > (b.x + b.width))
     );
 }
+/**
+ *  Main menu
+ */
+
+/**
+*  Main menu buttons
+*/
+var menuButtons = document.querySelectorAll('.menu .item');
+
+for(var i = 0; i<menuButtons.length; i++){
+    var button = menuButtons[i];
+
+    //open submenu
+    button.addEventListener('click', function(e){
+        var type = e.currentTarget.getAttribute('data-type');
+
+        //hide main menu and show submenus
+        var mainMenu = document.querySelector('.menu .main');
+        mainMenu.classList.add('hidden');
+        var subMenus = document.querySelector('.submenus');
+        subMenus.classList.add('active');
+
+        var submenu = document.querySelector('.submenu[data-type="' + type + '"]');
+        submenu.classList.add('active');
+
+    })
+}
+
+/**
+ *
+ * Back button on each of the submenus
+ */
+var backButtons = document.querySelectorAll('.btn-back-to-main-menu');
+
+for(var i = 0; i<backButtons.length; i++){
+    backButtons[i].addEventListener('click', function(){
+
+        //go back to main menu
+        var mainMenu = document.querySelector('.menu .main');
+        mainMenu.classList.remove('hidden');
+        var subMenus = document.querySelector('.submenus');
+        subMenus.classList.remove('active');
+
+        //close active submenu
+        var activeSubMenu = document.querySelector('.submenu.active');
+        activeSubMenu.classList.remove('active');
+
+    })
+}
+
+/**
+ * Focus in the input when clicked on label too
+ */
+
+$('.submenu label').on('click tap', function(){
+    $(this).siblings('input').focus();
+})
+
+/**
+ * Save user name in db/localstorage and start the game
+ */
+$('.btn-start-quickplay').on('click tap', function(){
+    //check if name has been entered
+    var name = $(this).siblings('.input-group').find('input').val();
+
+    if(!name.length){
+        //please enter name
+        showSnackbar('Enter your name or live in shame');
+        return false;
+    }
+
+    //set item in localstorage
+    localStorage.setItem('name', name);
+
+    //TODO: set name in db
+
+    //redirect player to game
+    window.location.replace('/game');
+
+});
+
+var snackbarTicker;
+
+function showSnackbar(message){
+
+    var snackbar = $('.snackbar');
+
+    //check if the snackbar is already open
+    if(snackbar.hasClass('open')){
+
+        //if it is open, first close it
+        snackbar.removeClass('open');
+
+        //clear the previous closing timeout
+        clearTimeout(snackbarTicker);
+
+        //wait for the closing animation to end
+        snackbar.on('transitionend', function(){
+
+            //unbind transtion to prevent the snackbar from
+            //jumping every time it shows
+            snackbar.off('transitionend');
+            snackbar.text(message).addClass('open');
+
+            //close snackbar
+            snackbarTicker = setTimeout(function(){
+                snackbar.removeClass('open');
+            }, 2000)
+        })
+
+        return false;
+    }
+
+    //show snackbar and insert message
+    snackbar.text(message).addClass('open');
+
+    //close snackbar
+    snackbarTicker = setTimeout(function(){
+        snackbar.removeClass('open');
+    }, 2000)
+
+}
+
+
+
+
+
+
+
