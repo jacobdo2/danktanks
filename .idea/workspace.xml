@@ -29,25 +29,25 @@
       <file leaf-file-name="gulpfile.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
+            <state relative-caret-position="127">
               <caret line="23" column="2" lean-forward="false" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dev/js/game/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="138" column="77" lean-forward="false" selection-start-line="138" selection-start-column="77" selection-end-line="138" selection-end-column="77" />
+            <state relative-caret-position="450">
+              <caret line="138" column="57" lean-forward="true" selection-start-line="138" selection-start-column="57" selection-end-line="138" selection-end-column="57" />
               <folding>
                 <element signature="e#1188#1621#0" expanded="false" />
                 <element signature="e#1822#3589#0" expanded="false" />
                 <element signature="e#3664#4288#0" expanded="false" />
-                <element signature="e#5200#5633#0" expanded="false" />
-                <element signature="e#5667#6177#0" expanded="false" />
-                <element signature="e#6237#6408#0" expanded="false" />
+                <element signature="e#5248#5681#0" expanded="false" />
+                <element signature="e#5715#6225#0" expanded="false" />
+                <element signature="e#6285#6456#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -67,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/dev/js/game/game.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="420">
-              <caret line="42" column="55" lean-forward="true" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="55" />
+              <caret line="42" column="55" lean-forward="false" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="55" />
               <folding>
                 <element signature="n#!!block;n#checkButtonPress#0" expanded="false" />
               </folding>
@@ -75,7 +75,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="events.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="events.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dev/js/game/events.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="600">
@@ -146,8 +146,8 @@
         <option value="$PROJECT_DIR$/dev/js/game/input.js" />
         <option value="$PROJECT_DIR$/dev/js/game/game.js" />
         <option value="$PROJECT_DIR$/dev/js/game/bullet.js" />
-        <option value="$PROJECT_DIR$/dev/js/game/canvas.js" />
         <option value="$PROJECT_DIR$/dev/js/game/events.js" />
+        <option value="$PROJECT_DIR$/dev/js/game/canvas.js" />
       </list>
     </option>
   </component>
@@ -380,12 +380,12 @@
       <workItem from="1482511757946" duration="10457000" />
       <workItem from="1482583453766" duration="5358000" />
       <workItem from="1482664999393" duration="4707000" />
-      <workItem from="1482681362264" duration="133000" />
+      <workItem from="1482681362264" duration="679000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25616000" />
+    <option name="totallyTimeSpent" value="26162000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -407,7 +407,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19078243" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19078243" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -449,9 +449,9 @@
             <element signature="e#1188#1621#0" expanded="false" />
             <element signature="e#1822#3589#0" expanded="false" />
             <element signature="e#3664#4288#0" expanded="false" />
-            <element signature="e#5200#5633#0" expanded="false" />
-            <element signature="e#5667#6177#0" expanded="false" />
-            <element signature="e#6237#6408#0" expanded="false" />
+            <element signature="e#5248#5681#0" expanded="false" />
+            <element signature="e#5715#6225#0" expanded="false" />
+            <element signature="e#6285#6456#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -530,9 +530,9 @@
             <element signature="e#1188#1621#0" expanded="false" />
             <element signature="e#1822#3589#0" expanded="false" />
             <element signature="e#3664#4288#0" expanded="false" />
-            <element signature="e#5200#5633#0" expanded="false" />
-            <element signature="e#5667#6177#0" expanded="false" />
-            <element signature="e#6237#6408#0" expanded="false" />
+            <element signature="e#5248#5681#0" expanded="false" />
+            <element signature="e#5715#6225#0" expanded="false" />
+            <element signature="e#6285#6456#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -611,9 +611,9 @@
             <element signature="e#1188#1621#0" expanded="false" />
             <element signature="e#1822#3589#0" expanded="false" />
             <element signature="e#3664#4288#0" expanded="false" />
-            <element signature="e#5200#5633#0" expanded="false" />
-            <element signature="e#5667#6177#0" expanded="false" />
-            <element signature="e#6237#6408#0" expanded="false" />
+            <element signature="e#5248#5681#0" expanded="false" />
+            <element signature="e#5715#6225#0" expanded="false" />
+            <element signature="e#6285#6456#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -700,14 +700,6 @@
     <entry file="file://$PROJECT_DIR$/dev/js/game.js" />
     <entry file="file://$PROJECT_DIR$/dev/js/input.js" />
     <entry file="file://$PROJECT_DIR$/dev/js/tank.js" />
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="23" column="2" lean-forward="false" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="302">
@@ -737,7 +729,7 @@
     <entry file="file://$PROJECT_DIR$/dev/js/game/game.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
-          <caret line="42" column="55" lean-forward="true" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="55" />
+          <caret line="42" column="55" lean-forward="false" selection-start-line="42" selection-start-column="55" selection-end-line="42" selection-end-column="55" />
           <folding>
             <element signature="n#!!block;n#checkButtonPress#0" expanded="false" />
           </folding>
@@ -766,26 +758,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dev/js/game/canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="138" column="77" lean-forward="false" selection-start-line="138" selection-start-column="77" selection-end-line="138" selection-end-column="77" />
-          <folding>
-            <element signature="e#1188#1621#0" expanded="false" />
-            <element signature="e#1822#3589#0" expanded="false" />
-            <element signature="e#3664#4288#0" expanded="false" />
-            <element signature="e#5200#5633#0" expanded="false" />
-            <element signature="e#5667#6177#0" expanded="false" />
-            <element signature="e#6237#6408#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dev/js/game/events.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="20" column="32" lean-forward="false" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="23" column="2" lean-forward="false" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/js/game/canvas.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="138" column="57" lean-forward="true" selection-start-line="138" selection-start-column="57" selection-end-line="138" selection-end-column="57" />
+          <folding>
+            <element signature="e#1188#1621#0" expanded="false" />
+            <element signature="e#1822#3589#0" expanded="false" />
+            <element signature="e#3664#4288#0" expanded="false" />
+            <element signature="e#5248#5681#0" expanded="false" />
+            <element signature="e#5715#6225#0" expanded="false" />
+            <element signature="e#6285#6456#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

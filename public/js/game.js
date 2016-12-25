@@ -285,6 +285,7 @@ if(canvas){
         for (var i = 0; i < effects.length; i++) {
             var effect = effects[i];
             var effectImage = new Image();
+            // Change effect image based on what type of effect it is
             switch (effect.effectType) {
                 case 'explosion':
                     effectImage.src = './images/effects/explosion.png';
@@ -294,9 +295,9 @@ if(canvas){
             }
             var effectWidth = effectImage.naturalWidth / effect.effectLength;
             var effectHeight = effectImage.naturalHeight;
-            ctx.drawImage(effectImage, 0, 0, effectWidth * effect.effectIndex, effectHeight ,effect.x, effect.y, effectWidth, effectHeight);
-            //ctx.drawImage(effectImage, effect.x, effect.y, 64, 64);
-            //console.log('effect width:' + effect.effectIndex);
+            var effectX = effect.x - effectWidth/2;
+            var effectY = effect.y - effectHeight/2;
+            ctx.drawImage(effectImage, effectWidth * effect.effectIndex, 0, effectWidth, effectHeight, effectX, effectY, effectWidth, effectHeight);
         }
 
         // Draw level top part
@@ -432,7 +433,6 @@ if(canvas){
 
 
 
-<<<<<<< HEAD
 window.onload = function(){
     // var testTank = clone(defaultTank);
     // testTank.x = 1050;
@@ -443,6 +443,7 @@ window.onload = function(){
         var response = JSON.parse(response);
         clientId = response.userId;
         userTank.userId = response.userId;
+        userTank.name = response.username;
         userTank.team = response.userId;
         tankToControl = userTank;
         tanks.push(userTank);
@@ -457,39 +458,7 @@ window.onload = function(){
             draw();
         }, 16.67);
     });
-}
-=======
-
-    window.onload = function(){
-        // var testTank = clone(defaultTank);
-        // testTank.x = 1050;
-        // tanks.push(testTank);
-        console.log("testing branch");
-        var userTank = clone(defaultTank);
-        socket.on('join game', function(response){
-            var response = JSON.parse(response);
-            clientId = response.userId;
-            userTank.userId = response.userId;
-            userTank.name = response.username;
-            userTank.team = response.userId;
-            tankToControl = userTank;
-            tanks.push(userTank);
-
-            ticker = setInterval(function () {
-                if (gameStarted) {
-                    checkInput(userTank);
-                    moveBullets();
-                    updateTanks();
-
-                }
-                draw();
-            }, 16.67);
-        });
-    }
-
-
->>>>>>> 4d1a1db0b31834df754a6c9c653e081772b02a79
-
+};
 var spawnPositions = [
     {'x':150, 'y':150},
     {'x':1130, 'y':150},

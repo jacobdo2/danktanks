@@ -127,6 +127,7 @@ if(canvas){
         for (var i = 0; i < effects.length; i++) {
             var effect = effects[i];
             var effectImage = new Image();
+            // Change effect image based on what type of effect it is
             switch (effect.effectType) {
                 case 'explosion':
                     effectImage.src = './images/effects/explosion.png';
@@ -136,9 +137,9 @@ if(canvas){
             }
             var effectWidth = effectImage.naturalWidth / effect.effectLength;
             var effectHeight = effectImage.naturalHeight;
-            ctx.drawImage(effectImage, 0, 0, effectWidth * effect.effectIndex, effectHeight ,effect.x, effect.y, effectWidth, effectHeight);
-            //ctx.drawImage(effectImage, effect.x, effect.y, 64, 64);
-            //console.log('effect width:' + effect.effectIndex);
+            var effectX = effect.x - effectWidth/2;
+            var effectY = effect.y - effectHeight/2;
+            ctx.drawImage(effectImage, effectWidth * effect.effectIndex, 0, effectWidth, effectHeight, effectX, effectY, effectWidth, effectHeight);
         }
 
         // Draw level top part
