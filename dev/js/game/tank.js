@@ -84,6 +84,7 @@ function checkTankCollisions(curTank) {
             if (isCollide(curTank, obj, newX, newY)) {
                 curTank.xspd = 0;
                 curTank.yspd = 0;
+                curTank.movementSpeed = 0;
                 collisionHappened = true;
                 console.log("collided on diagonal");
             }

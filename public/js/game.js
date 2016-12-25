@@ -39,10 +39,11 @@ var defaultTank = {
 var tanks = [
 
 ];
-// Bullet: team, xspd, yspd, x, y, width, height
 var bullets = [
 
 ];
+// Effect: effectType, x, y, currentIndex, effectLength
+var effects = [];
 /*
 var buttons = [
     {
@@ -95,17 +96,18 @@ var tankToControl = tanks[0];
 // Tank parameters
 var turnSpeed = 240/60; // How fast tank turns, degrees per second, 240 degrees
 var attackSpeed = 60/5; // Time before you can shoot again, 5 shots a second
-var energyRechargeSpeed = 100/(60*4); // Amount of energy it refills in 1/60th second
+var energyDrainSpeed = 100/(60*1);
+var energyRechargeSpeed = 100/(60*5); // Amount of energy it refills in 1/60th second
 var reloadTime = 2*60; // Time it takes to reload, seconds
 var maxAmmo = 10; // How many bullets tank can hold
 var hitKnockbackMultiplier = 0.5; // How strong knockback is from bullet, multiplies bullet's speed
 var shotKnockbackMultiplier = 0.4; // How strong tank gets knocked back when shooting, multiplies bullet's speed
 var tankMoveSpeed = 3.5; // Top speed of tank when driving
-var tankBoostSpeed = 4.5; // Top speed of tank while boosting
-var tankAcceleration = tankMoveSpeed/60; // Acceleration amount in a frame
-var tankDeceleration = tankMoveSpeed/60; // Deceleration amount in a frame
+var tankBoostSpeed = 5; // Top speed of tank while boosting
+var tankAcceleration = tankMoveSpeed/15; // Acceleration amount in a frame
+var tankDeceleration = tankMoveSpeed/10; // Deceleration amount in a frame
+var boostAccelerationMultiplier = 1.5; // Multiplier, how many times faster tank accelerates from boost
 var knockbackFriction = .75; // Multiplier, how fast tank stops from knockback, max 1 - no friction, min 0 - instantly stops
-var movementFriction = .9; // Multiplier, how fast tank stops from moving
 var bulletSpeed = 12; // How fast bullet moves, pixels/frame
 var bulletDamage = 20;
 
@@ -131,6 +133,14 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
         var obj = level[i];
 
         if (isCollide(bullet, obj, newX, newY)) {
+            var explosionEffect = {
+                'effectType':'explosion',
+                'x':newX,
+                'y':newY,
+                'effectIndex':1,
+                'effectLength':10
+            };
+            effects.push(explosionEffect);
             bullets.splice(index, 1);
         }
     }
@@ -178,7 +188,7 @@ if(canvas){
 
         // Draw background
         var backgroundImage = new Image();
-        backgroundImage.src = './images/environment/concrete.png';
+        backgroundImage.src = './images/environment/tile50.png';
         var pattern = ctx.createPattern(backgroundImage, 'repeat');
         ctx.fillStyle = pattern;
         ctx.fillRect(-2000, -2000, 24000, 24000);
@@ -271,6 +281,24 @@ if(canvas){
             drawImageRotated(ctx, bullet, x , y-24, 20, 10, r);
         }
 
+        // Draw effects
+        for (var i = 0; i < effects.length; i++) {
+            var effect = effects[i];
+            var effectImage = new Image();
+            switch (effect.effectType) {
+                case 'explosion':
+                    effectImage.src = './images/effects/explosion.png';
+                    break;
+                case 'something else':
+                    break;
+            }
+            var effectWidth = effectImage.naturalWidth / effect.effectLength;
+            var effectHeight = effectImage.naturalHeight;
+            ctx.drawImage(effectImage, 0, 0, effectWidth * effect.effectIndex, effectHeight ,effect.x, effect.y, effectWidth, effectHeight);
+            //ctx.drawImage(effectImage, effect.x, effect.y, 64, 64);
+            //console.log('effect width:' + effect.effectIndex);
+        }
+
         // Draw level top part
         for (var i = 0; i < level.length; i++) {
             // Probably use this switch for images
@@ -315,11 +343,11 @@ if(canvas){
         pointerImage.src = './images/ui/pointer.png';
         ctx.drawImage(pointerImage, aimPointer.x + 1, aimPointer.y + 1);*/
         // Ammo UI
-        ctx.font = '56px serif';
+        ctx.font = '64px serif';
         ctx.textAlign = 'right';
         ctx.fillStyle = 'black';
         var ammoTextX = viewX + viewW - 30;
-        var ammoTextY = viewY + viewH - 30;
+        var ammoTextY = viewY + viewH - 20;
         // Draw ammo text
         if (tankToControl.ammo > 0 && tank.reloadTimer <= 0) {
             ctx.fillText(""+tankToControl.ammo, ammoTextX, ammoTextY);
@@ -328,6 +356,9 @@ if(canvas){
         }
 
         // Armor and energy bars
+        // Bar parameters
+        var barUiOffsetX = 12;
+        var barUiOffsetY = viewH - 74;
         // Get background and glass image
         var uiBarBg = new Image();
         uiBarBg.src = './images/ui/uiBarBg.png';
@@ -335,25 +366,25 @@ if(canvas){
         uiBarGlass.src = './images/ui/uiBarGlass.png';
         // Armor bar
         // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 128, 256, 64);
+        ctx.drawImage(uiBarBg, viewX + barUiOffsetX, viewY + barUiOffsetY, 256, 64);
         // Armor bar
         var armorBar = new Image();
         armorBar.src = './images/ui/armorBar.png';
         var hpPercentage = tank.hp / tank.maxHp;
-        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX, viewY + viewH - 128, hpPercentage * 256, 64);
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX + barUiOffsetX, viewY + barUiOffsetY, hpPercentage * 256, 64);
         // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 128, 256, 64);
+        ctx.drawImage(uiBarGlass, viewX + barUiOffsetX, viewY + barUiOffsetY, 256, 64);
 
         // Energy bar
         // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 64, 256, 64);
+        ctx.drawImage(uiBarBg, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, 256, 64);
         // Energy bar
         var energyBar = new Image();
         energyBar.src = './images/ui/energyBar.png';
         var energyBarPercentage = tank.energy / 100;
-        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX, viewY + viewH - 64, energyBarPercentage * 256, 64);
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, energyBarPercentage * 256, 64);
         // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 64, 256, 64);
+        ctx.drawImage(uiBarGlass, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, 256, 64);
     }
 
     function drawRotated(ctx, x, y, width, height, rotation) {
@@ -420,7 +451,7 @@ window.onload = function(){
                 checkInput(userTank);
                 moveBullets();
                 updateTanks();
-
+                updateEffects();
             }
             draw();
         }, 16.67);
@@ -462,6 +493,17 @@ function checkButtonPress() {
     }
 
     return buttonPressed;
+}
+
+function updateEffects() {
+    // Loop through all effects
+    for (var i = 0; i < effects.length; i++) {
+        var effect = effects[i];
+        effect.effectIndex++;
+        if (effect.effectIndex > effect.effectLength) {
+            effects.splice(i, 1);
+        }
+    }
 }
 
 function clone(obj) {
@@ -580,15 +622,14 @@ function checkInput(tankToControl) {
 
     // Check movement input
     if (xaxis != 0 || yaxis != 0) {
-        if (!spacebar) {
-            // Set max speed
-            tank.maxSpeed = tankMoveSpeed;
-        } else
+        // Default max speed to normal driving speed
+        tank.maxSpeed = tankMoveSpeed;
+
         if (spacebar && tank.energy > 0) {
             // Set max speed higher
             tank.maxSpeed = tankBoostSpeed;
             // Drain energy
-            tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
+            tank.energy -= (energyDrainSpeed + energyRechargeSpeed); // Extra minus to compensate recharge speed
         }
 
         // Drive forward
@@ -598,7 +639,7 @@ function checkInput(tankToControl) {
             var speedIncrease = Math.min(tankAcceleration + tankDeceleration, tank.maxSpeed - tank.movementSpeed);
             // Increase acceleration if boosting
             if (spacebar && tank.energy > 0) {
-                speedIncrease *= 2;
+                speedIncrease *= boostAccelerationMultiplier;
             }
             tank.movementSpeed += speedIncrease;
         }
@@ -804,6 +845,7 @@ function checkTankCollisions(curTank) {
             if (isCollide(curTank, obj, newX, newY)) {
                 curTank.xspd = 0;
                 curTank.yspd = 0;
+                curTank.movementSpeed = 0;
                 collisionHappened = true;
                 console.log("collided on diagonal");
             }

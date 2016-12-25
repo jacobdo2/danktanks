@@ -35,6 +35,17 @@ function checkButtonPress() {
     return buttonPressed;
 }
 
+function updateEffects() {
+    // Loop through all effects
+    for (var i = 0; i < effects.length; i++) {
+        var effect = effects[i];
+        effect.effectIndex++;
+        if (effect.effectIndex > effect.effectLength) {
+            effects.splice(i, 1);
+        }
+    }
+}
+
 function clone(obj) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = obj.constructor();

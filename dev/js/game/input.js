@@ -106,15 +106,14 @@ function checkInput(tankToControl) {
 
     // Check movement input
     if (xaxis != 0 || yaxis != 0) {
-        if (!spacebar) {
-            // Set max speed
-            tank.maxSpeed = tankMoveSpeed;
-        } else
+        // Default max speed to normal driving speed
+        tank.maxSpeed = tankMoveSpeed;
+
         if (spacebar && tank.energy > 0) {
             // Set max speed higher
             tank.maxSpeed = tankBoostSpeed;
             // Drain energy
-            tank.energy -= (1 + energyRechargeSpeed); // Extra minus to compensate recharge speed
+            tank.energy -= (energyDrainSpeed + energyRechargeSpeed); // Extra minus to compensate recharge speed
         }
 
         // Drive forward
@@ -124,7 +123,7 @@ function checkInput(tankToControl) {
             var speedIncrease = Math.min(tankAcceleration + tankDeceleration, tank.maxSpeed - tank.movementSpeed);
             // Increase acceleration if boosting
             if (spacebar && tank.energy > 0) {
-                speedIncrease *= 2;
+                speedIncrease *= boostAccelerationMultiplier;
             }
             tank.movementSpeed += speedIncrease;
         }

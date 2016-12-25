@@ -17,7 +17,7 @@ window.onload = function(){
                 checkInput(userTank);
                 moveBullets();
                 updateTanks();
-
+                updateEffects();
             }
             draw();
         }, 16.67);

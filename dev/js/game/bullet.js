@@ -18,6 +18,14 @@ function checkBulletCollisions(bullet, xspd, yspd, index) {
         var obj = level[i];
 
         if (isCollide(bullet, obj, newX, newY)) {
+            var explosionEffect = {
+                'effectType':'explosion',
+                'x':newX,
+                'y':newY,
+                'effectIndex':1,
+                'effectLength':10
+            };
+            effects.push(explosionEffect);
             bullets.splice(index, 1);
         }
     }

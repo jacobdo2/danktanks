@@ -30,7 +30,7 @@ if(canvas){
 
         // Draw background
         var backgroundImage = new Image();
-        backgroundImage.src = './images/environment/concrete.png';
+        backgroundImage.src = './images/environment/tile50.png';
         var pattern = ctx.createPattern(backgroundImage, 'repeat');
         ctx.fillStyle = pattern;
         ctx.fillRect(-2000, -2000, 24000, 24000);
@@ -123,6 +123,24 @@ if(canvas){
             drawImageRotated(ctx, bullet, x , y-24, 20, 10, r);
         }
 
+        // Draw effects
+        for (var i = 0; i < effects.length; i++) {
+            var effect = effects[i];
+            var effectImage = new Image();
+            switch (effect.effectType) {
+                case 'explosion':
+                    effectImage.src = './images/effects/explosion.png';
+                    break;
+                case 'something else':
+                    break;
+            }
+            var effectWidth = effectImage.naturalWidth / effect.effectLength;
+            var effectHeight = effectImage.naturalHeight;
+            ctx.drawImage(effectImage, 0, 0, effectWidth * effect.effectIndex, effectHeight ,effect.x, effect.y, effectWidth, effectHeight);
+            //ctx.drawImage(effectImage, effect.x, effect.y, 64, 64);
+            //console.log('effect width:' + effect.effectIndex);
+        }
+
         // Draw level top part
         for (var i = 0; i < level.length; i++) {
             // Probably use this switch for images
@@ -167,11 +185,11 @@ if(canvas){
         pointerImage.src = './images/ui/pointer.png';
         ctx.drawImage(pointerImage, aimPointer.x + 1, aimPointer.y + 1);*/
         // Ammo UI
-        ctx.font = '56px serif';
+        ctx.font = '64px serif';
         ctx.textAlign = 'right';
         ctx.fillStyle = 'black';
         var ammoTextX = viewX + viewW - 30;
-        var ammoTextY = viewY + viewH - 30;
+        var ammoTextY = viewY + viewH - 20;
         // Draw ammo text
         if (tankToControl.ammo > 0 && tank.reloadTimer <= 0) {
             ctx.fillText(""+tankToControl.ammo, ammoTextX, ammoTextY);
@@ -180,6 +198,9 @@ if(canvas){
         }
 
         // Armor and energy bars
+        // Bar parameters
+        var barUiOffsetX = 12;
+        var barUiOffsetY = viewH - 74;
         // Get background and glass image
         var uiBarBg = new Image();
         uiBarBg.src = './images/ui/uiBarBg.png';
@@ -187,25 +208,25 @@ if(canvas){
         uiBarGlass.src = './images/ui/uiBarGlass.png';
         // Armor bar
         // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 128, 256, 64);
+        ctx.drawImage(uiBarBg, viewX + barUiOffsetX, viewY + barUiOffsetY, 256, 64);
         // Armor bar
         var armorBar = new Image();
         armorBar.src = './images/ui/armorBar.png';
         var hpPercentage = tank.hp / tank.maxHp;
-        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX, viewY + viewH - 128, hpPercentage * 256, 64);
+        ctx.drawImage(armorBar, 0, 0, hpPercentage * 256, 64, viewX + barUiOffsetX, viewY + barUiOffsetY, hpPercentage * 256, 64);
         // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 128, 256, 64);
+        ctx.drawImage(uiBarGlass, viewX + barUiOffsetX, viewY + barUiOffsetY, 256, 64);
 
         // Energy bar
         // Background
-        ctx.drawImage(uiBarBg, viewX, viewY + viewH - 64, 256, 64);
+        ctx.drawImage(uiBarBg, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, 256, 64);
         // Energy bar
         var energyBar = new Image();
         energyBar.src = './images/ui/energyBar.png';
         var energyBarPercentage = tank.energy / 100;
-        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX, viewY + viewH - 64, energyBarPercentage * 256, 64);
+        ctx.drawImage(energyBar, 0, 0, energyBarPercentage * 256, 64, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, energyBarPercentage * 256, 64);
         // Glass
-        ctx.drawImage(uiBarGlass, viewX, viewY + viewH - 64, 256, 64);
+        ctx.drawImage(uiBarGlass, viewX + 256 + barUiOffsetX * 2, viewY + barUiOffsetY, 256, 64);
     }
 
     function drawRotated(ctx, x, y, width, height, rotation) {
