@@ -9,6 +9,14 @@ gulp.task("concatGameJs", function(){
         .pipe(gulp.dest("public/js"));
 });
 
+gulp.task("concatMigrations", function(){
+    gulp.src(["migrations/db.js",
+            "migrations/_create_quickplay_users_table.js",
+            "migrations/close_db.js"])
+        .pipe(concat("migrations.js"))
+        .pipe(gulp.dest("migrations/"));
+})
+
 gulp.task("concatUiJs", function(){
     gulp.src(["dev/js/ui/**/*.js"])
         .pipe(concat("ui.js"))
@@ -17,6 +25,7 @@ gulp.task("concatUiJs", function(){
 
 gulp.task('concatApp', function(){
     gulp.src(['server/_server.js',
+              'server/_db.js',
               'server/_routes.js',
               'server/_sockets.js'])
         .pipe(concat('app.js'))
@@ -29,7 +38,8 @@ gulp.task("compileSass", function(){
         .pipe(gulp.dest("public/css"));
 });
 
-gulp.task("default", function(){
+gulp.task("default", ["concatMigrations", "concatGameJs", "concatUiJs", "compileSass", "concatApp"],  function(){
+    gulp.watch(["migrations/**/*.js"], ["concatMigrations"]);
     gulp.watch(["dev/js/game/**/*.js"], ["concatGameJs"]);
     gulp.watch(["dev/js/ui/**/*.js"], ["concatUiJs"]);
     gulp.watch(["dev/sass/**/*.scss"], ["compileSass"]);
